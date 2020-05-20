@@ -38,6 +38,11 @@ BOUNDARY_CHECKS = {
 }
 
 
+def vert_location(v):
+    """Map a vertebra name to a location down the spine."""
+    return {'C': 0, 'T': 7, 'L': 19, 'S': 24}[v[0].lower()] + int(v[1])
+
+
 def save_results_csv(study_summary_list, out_csv):
     # Save the results
     df = pd.DataFrame(study_summary_list, columns=OUTPUT_COLUMN_ORDER)
@@ -60,7 +65,12 @@ def save_image_results(study_name, study_results, image_results, output_plot, pr
         reg_image_padded = np.hstack([reg_image, np.ones_like(reg_image)])
         preview_panels = [reg_image_padded]
 
-        for s in series_results['slices'].keys():
+        slices = list(series_results['slices'].keys())
+        try:
+            slices = sorted(slices, key=vert_location)
+        except:
+            pass
+        for s in slices:
             if segmentation_range is None:
                 mask = image_results['series'][series_uid][s]['seg_mask']
                 image = image_results['series'][series_uid][s]['image']
