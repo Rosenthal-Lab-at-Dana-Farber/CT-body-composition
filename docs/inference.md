@@ -19,7 +19,14 @@ $ python organize_inference_data.py /path/to/existing_data_directory /path/to/ne
 ```
 
 In addition, there should be a CSV file with columns named `MRN` and `ACC`,
-which list the MRN and accession numbers that you wish to process.
+which list the MRN and accession numbers that you wish to process. E.g.,
+
+```
+MRN,ACC
+012345,678910
+54321,109876
+314159,26535
+```
 
 ### Running the Process
 
