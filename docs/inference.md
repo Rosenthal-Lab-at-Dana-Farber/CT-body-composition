@@ -34,17 +34,17 @@ Basic usage looks like this:
 python run_from_csv.py my_csv_file.csv /path/to/results/directory /path/to/input/directory1 /path/to/input/directory2
 ```
 
-Note that there can be an arbitrary number (one or more) input directories,
-each with the files laid out in the `MRN_ACC` format. This allows for
+Note that there can be an arbitrary number (one or more) of input directories,
+each with the studies laid out in the `MRN_ACC` format. This allows for
 processing data from multiple data pulls at once.
 
 At the end of the process, the results directory will contain several artifacts:
 
-`json_files` - This directory contains the full results from the body
+`json_files/` - This directory contains the full results from the body
 composition analysis in JSON format.  There is one file per study, named with
 the study `MRN_ACC.json`.
 
-`previews` - This directory contains preview images that may be used to check
+`previews/` - This directory contains preview images that may be used to check
 the results visually efficiently. There is one preview png file per *series*
 that was successfully processed by the algorithm (there are often multiple such
 series per study). Each file is named `{MRN}_{ACC}_{SeriesInstanceUID}.png`.
@@ -52,7 +52,7 @@ series per study). Each file is named `{MRN}_{ACC}_{SeriesInstanceUID}.png`.
 `run_log.csv` - This file contains the basic results from running the
 model.  For each study listed in the input csv file, it lists whether the
 relevant DICOM data was found successfully, how many series from this study (if
-nay) the model was able to run on successfully.
+any) the model was able to run on successfully.
 
 `summary.csv` - This file lists a summary of the results of the results on
 every *series* successfully processed by the model, including the area of the
