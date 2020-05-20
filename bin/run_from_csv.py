@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import argparse
 
 from body_comp.inference.utils import run_body_comp_csv

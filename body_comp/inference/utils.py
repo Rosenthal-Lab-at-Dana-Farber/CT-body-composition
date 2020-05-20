@@ -168,7 +168,7 @@ def run_body_comp_csv(in_csv, input_dirs, output_dir, config_file=None, segmenta
         os.makedirs(seg_output_dir, exist_ok=True)
 
     # Results file goes in the results directory
-    out_csv = os.path.join(output_dir, 'results.csv')
+    out_csv = os.path.join(output_dir, 'run_log.csv')
 
     # Read in the input list of studies
     in_df = pd.read_csv(in_csv, dtype=str)
