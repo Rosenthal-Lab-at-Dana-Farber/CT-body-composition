@@ -13,6 +13,6 @@ You may install all the necessary components directly on your system, or if you 
 you may build a docker image that contains all the necessary requirements.
 
 See the documentation pages for further details:
-* [docs/installation.md](Installation) - For installing directly on your system
-* [docs/docker.md](Docker) - For building and using the docker image
-* [docs/inference.md](Inference) - For running the model on new data
+* [Installation](docs/installation.md) - For installing directly on your system
+* [Docker](docs/docker.md) - For building and using the docker image
+* [Inference](docs/inference.md) - For running the model on new data
