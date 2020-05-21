@@ -126,7 +126,7 @@ def save_image_results(study_name, study_results, image_results, output_plot, pr
 
 def run_body_comp_csv(in_csv, input_dirs, output_dir, config_file=None, segmentation_range=None, dicom_seg=False,
                       keep_existing=False, use_directory_list=False, num_threads=10, rerun_exceptions=False,
-                      recursive=False):
+                      recursive=False, min_slices_per_series=20):
 
     if rerun_exceptions and not keep_existing:
         raise ValueError('Enabling rerun_exceptions is not valid if keep_existing is not enabled')
@@ -146,7 +146,9 @@ def run_body_comp_csv(in_csv, input_dirs, output_dir, config_file=None, segmenta
             estimator_config = json.load(jsonfile)
 
     # Set up the model object
-    estimator = BodyCompositionEstimator(**estimator_config, num_threads=num_threads)
+    estimator = BodyCompositionEstimator(**estimator_config,
+                                         num_threads=num_threads,
+                                         min_slices_per_series=min_slices_per_series)
 
     # Make sure the output directories exist and are empty
     if os.path.exists(output_dir) and not keep_existing:

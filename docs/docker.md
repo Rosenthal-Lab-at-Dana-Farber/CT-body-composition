@@ -12,7 +12,7 @@ After you have cloned the body composition repository, change directory to the
 root of the cloned repository (where the file called `Dockerfile` is found) and
 run:
 
-```
+```bash
 $ sudo docker build -t body_comp:latest .
 ```
 
@@ -32,7 +32,7 @@ For example, the following command will run the container with data on your
 system (`/path/to/data`) mounted into the container so that it's visible at
 `/data`:
 
-```
+```bash
 $ sudo docker run --it -v /path/to/data/:/data/ body_comp:latest bash
 ```
 

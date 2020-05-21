@@ -14,7 +14,7 @@ the study directory, the names of the DICOM files do not matter.
 If you do not have the data placed in this format, there is a script in the
 `bin` directory that will created an organized copy of your data for you.
 
-```
+```bash
 $ python organize_inference_data.py /path/to/existing_data_directory /path/to/new/organized/directory
 ```
 
@@ -37,8 +37,8 @@ and segmentation steps, and then outputs the results into a results directory.
 
 Basic usage looks like this:
 
-```
-python run_from_csv.py my_csv_file.csv /path/to/results/directory /path/to/input/directory1 /path/to/input/directory2
+```bash
+$ python run_from_csv.py my_csv_file.csv /path/to/results/directory /path/to/input/directory1 /path/to/input/directory2
 ```
 
 Note that there can be an arbitrary number (one or more) of input directories,
@@ -89,7 +89,10 @@ mm) to perform segmentation on for multislice analysis. If this is specified,
 then the slices are selected as usual, but then any slice that lies within the
 given distance of the selected slice is segmented, and the results are
 averaged. This usually gives a more robust result, but setting it too high will
-cause the model to segment areas that it wasn't trained to segment.
+cause the model to segment areas that it wasn't trained to segment. If this
+option is chosen, there is an additional sub-directory of the output directory
+called `all_slices`, which stores segmentation masks for every output slice
+in `.png` format. The preview image contains just the chosen center slice.
 
 `--use_directory_list`, `-l` - If there are a large number of input directories
 that need to be searched to find the studies listed in the CSV file, it may
@@ -120,12 +123,14 @@ segment it. However these models may be customized, including adding additional
 levels of the abdomen/thorax to process. To do this, a new config file should be
 created in JSON format to specify the models.
 
+`--min_slices_per_series`, `-m` - Reject series with fewer than this number of
+images. Useful for rejecting small localizer series. Default: 20
+
 Here is the layout of an example configuration file:
 
 ```json
 {
     "sigmoid_output": true,
-    "min_slices_per_series": 20,
     "slice_selection_weights": "/path/to/some/model.hdf5",
     "slice_params": {
         "L3": {

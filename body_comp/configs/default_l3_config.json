@@ -1,6 +1,5 @@
 {
     "sigmoid_output": true,
-    "min_slices_per_series": 20,
     "slice_selection_weights": null,
     "slice_params": {
         "L3": {

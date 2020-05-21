@@ -26,6 +26,8 @@ if __name__ == '__main__':
                         help='Treat the input directory as a text file containing directories')
     parser.add_argument('--dicom_seg', '-d', action='store_true',
                         help='Save dicom seg files')
+    parser.add_argument('--min_slices_per_series', '-m', type=int, default=20,
+                        help='Reject series with fewer than this number of instances')
     args = parser.parse_args()
 
     run_body_comp_csv(**vars(args))
