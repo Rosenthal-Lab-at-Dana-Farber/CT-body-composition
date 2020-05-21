@@ -5,7 +5,7 @@ of the code.
 Once you have cloned this repository you can install the `body_comp` package and all its dependencies by running
 this command from the root of the repository:
 
-```
+```bash
 $ pip install .
 ```
 
@@ -14,7 +14,7 @@ Having this package installed is important to be able to decompress some of the 
 syntaxes (compression methods). If you are using Anaconda, you can install the `gdcm` package from their repositories.
 On a Mac, you can install `gdcm` with:
 
-```
+```bash
 brew install gdcm --with-python3
 ```
 
