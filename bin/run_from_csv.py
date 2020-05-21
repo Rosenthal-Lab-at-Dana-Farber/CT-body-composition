@@ -12,7 +12,7 @@ if __name__ == '__main__':
                                            'is specified.')
     parser.add_argument('input_dirs', nargs='+', help='Directory(ies) containing input files')
     parser.add_argument('--config_file', '-c', help='A json file containing parameters for the estimator')
-    parser.add_argument('--num_threads', '-t', type=int, default=10, help='Number of threads to use')
+    parser.add_argument('--num_threads', '-t', type=int, default=1, help='Number of threads to use')
     parser.add_argument('--segmentation_range', '-r', type=float,
                         help='Segment all slices with this range (leave unspecified for single slice)')
     parser.add_argument('--keep_existing', '-k', action='store_true',

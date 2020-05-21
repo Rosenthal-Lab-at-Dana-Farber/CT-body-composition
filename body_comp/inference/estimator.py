@@ -118,6 +118,12 @@ class BodyCompositionEstimator:
             Set to true if the slice selection model outputs a true sigmoid range (between 0 and 1 rather than -1
             and 1) for each target slice. If false, the slice selection model outputs a single number in a 1D space for
             each input slice, which is compared to the 'z_pos' field of 'slice_params' to perform slice selection.
+        min_slices_per_series: int
+            Reject any series with fewer than this number of slices (useful for removing localizers).
+        algorithm_version: str
+            The algorithm version string used in the DICOM segmentation output.
+        num_threads: int
+            Number of threads to use (using python multiprocessing) to read in image files.
 
         """
         self.slice_smoothing_kernel = 2.0
