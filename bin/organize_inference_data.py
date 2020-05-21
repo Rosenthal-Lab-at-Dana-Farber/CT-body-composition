@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from argparse import ArgumentParser
+from pathlib import Path
 
 from body_comp.inference.organize import organize_data
 
