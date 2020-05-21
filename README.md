@@ -2,7 +2,7 @@
 
 This repository provides code for training and running body composition estimation models on abdominal CT scans.
 
-### Installation
+### Getting Started
 
 **Important** this repository uses git-lfs (large file storage) to store model weights efficiently in git.
 Before cloning this repository, make sure that you have git-lfs (large file system) installed.
