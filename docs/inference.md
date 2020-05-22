@@ -54,7 +54,8 @@ the study `MRN_ACC.json`.
 `previews/` - This directory contains preview images that may be used to check
 the results visually efficiently. There is one preview png file per *series*
 that was successfully processed by the algorithm (there are often multiple such
-series per study). Each file is named `{MRN}_{ACC}_{SeriesInstanceUID}.png`.
+series per study). Each file is named
+`{MRN}_{ACC}_{SeriesInstanceUID}_preview.png`.
 
 `run_log.csv` - This file contains the basic results from running the
 model.  For each study listed in the input csv file, it lists whether the
