@@ -131,7 +131,7 @@ class BodyCompositionEstimator:
         if slice_selection_weights is None:
             # Get the default model file installed with the package
             slice_selection_weights = resource_filename('body_comp', 'models/regression_densenet_l12_k12.hdf5')
-        self.slice_selection_model = load_model(slice_selection_weights)
+        self.slice_selection_model = load_model(slice_selection_weights, compile=False)
 
         # Read in all the segmentation models required
         self.slice_params = slice_params.copy()
@@ -142,7 +142,7 @@ class BodyCompositionEstimator:
                     'body_comp', 'models/segmentation_unet_d5_i16_c1.hdf5'
                 )
         unique_seg_models = list(set([v['model_weights'] for v in self.slice_params.values()]))
-        segmentation_models = [load_model(weights) for weights in unique_seg_models]
+        segmentation_models = [load_model(weights, compile=False) for weights in unique_seg_models]
         for s in self.slice_params.keys():
             model_index = unique_seg_models.index((self.slice_params[s]['model_weights']))
             self.slice_params[s]['model'] = segmentation_models[model_index]
