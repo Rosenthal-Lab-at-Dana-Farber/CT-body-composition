@@ -94,7 +94,7 @@ def save_image_results(study_name, study_results, image_results, output_plot, pr
             preview_panels.append(output_image)
 
         # Stack the panels for each slice
-        preview_image_output = np.vstack(preview_panels)
+        preview_image_output = np.vstack(preview_panels).astype(np.uint8)
         image_path = os.path.join(preview_output_dir, '{}_{}_preview.png'.format(study_name, series_uid))
         imsave(image_path, preview_image_output)
 
