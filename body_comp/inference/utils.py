@@ -9,7 +9,7 @@ import pandas as pd
 
 from imageio import imsave, imread
 
-from skimage.color import grey2rgb
+from skimage.color import gray2rgb
 from skimage.color.colorlabel import label2rgb
 from skimage.transform import resize
 
@@ -88,8 +88,8 @@ def save_image_results(study_name, study_results, image_results, output_plot, pr
                 image = resize(image, reg_image.shape[:2], preserve_range=True, clip=False)
             if mask.shape != reg_image.shape[:2]:
                 mask = resize(mask, reg_image.shape[:2], preserve_range=True, clip=False, order=0)
-            colour_mask = label2rgb(mask, colors=MASK_COLOURS)
-            colour_image = grey2rgb(image) / 255
+            colour_mask = label2rgb(mask, colors=MASK_COLOURS, bg_label=-1)
+            colour_image = gray2rgb(image) / 255
             output_image = np.hstack([colour_image, colour_mask])
             preview_panels.append(output_image)
 
@@ -113,12 +113,12 @@ def save_image_results(study_name, study_results, image_results, output_plot, pr
                 for j, (im, mask) in enumerate(zip(images_list, masks_list)):
 
                     # Change the mask to colour and chosen image to RGB
-                    mask = label2rgb(mask, colors=MASK_COLOURS)
+                    mask = label2rgb(mask, colors=MASK_COLOURS, bg_label=-1)
 
                     im = estimator.apply_window(im)
-                    im = grey2rgb(im) / 255
+                    im = gray2rgb(im) / 255
 
-                    composite_image = np.hstack([im, mask])
+                    composite_image = np.hstack([im, mask]).astype(np.uint8)
 
                     image_path = os.path.join(series_output_dir, '{}_{}.png'.format(s, j))
                     imsave(image_path, composite_image)
