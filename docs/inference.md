@@ -92,8 +92,11 @@ given distance of the selected slice is segmented, and the results are
 averaged. This usually gives a more robust result, but setting it too high will
 cause the model to segment areas that it wasn't trained to segment. If this
 option is chosen, there is an additional sub-directory of the output directory
-called `all_slices`, which stores segmentation masks for every output slice
-in `.png` format. The preview image contains just the chosen center slice.
+called `all_slices`, which stores segmentation masks and original images for
+every output slice in `.png` format in sub-directories named by
+`{MRN}_{ACC}_{SeriesInstanceUID}`. The filename of the `.png` images matches
+that the position in the JSON file. The preview image contains just the chosen
+center slice.
 
 `--use_directory_list`, `-l` - If there are a large number of input directories
 that need to be searched to find the studies listed in the CSV file, it may

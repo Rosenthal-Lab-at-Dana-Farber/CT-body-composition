@@ -58,11 +58,11 @@ def save_image_results(study_name, study_results, image_results, output_plot, pr
         # Create a preview image containing the central image and the regression plot
         reg_file = output_plot.format(series_uid)
         reg_image = imread(reg_file)
-        reg_image = reg_image[:, :, :3] / 255
+        reg_image = reg_image[:, :, :3]
         os.remove(reg_file)
 
         # Place blank space next to the regression image
-        reg_image_padded = np.hstack([reg_image, np.ones_like(reg_image)])
+        reg_image_padded = np.hstack([reg_image, 255 * np.ones_like(reg_image)])
         preview_panels = [reg_image_padded]
 
         slices = list(series_results['slices'].keys())
@@ -88,8 +88,8 @@ def save_image_results(study_name, study_results, image_results, output_plot, pr
                 image = resize(image, reg_image.shape[:2], preserve_range=True, clip=False)
             if mask.shape != reg_image.shape[:2]:
                 mask = resize(mask, reg_image.shape[:2], preserve_range=True, clip=False, order=0)
-            colour_mask = label2rgb(mask, colors=MASK_COLOURS, bg_label=-1)
-            colour_image = gray2rgb(image) / 255
+            colour_mask = (label2rgb(mask, colors=MASK_COLOURS, bg_label=-1) * 255).astype(np.uint8)
+            colour_image = gray2rgb(image).astype(np.uint8)
             output_image = np.hstack([colour_image, colour_mask])
             preview_panels.append(output_image)
 
@@ -113,10 +113,10 @@ def save_image_results(study_name, study_results, image_results, output_plot, pr
                 for j, (im, mask) in enumerate(zip(images_list, masks_list)):
 
                     # Change the mask to colour and chosen image to RGB
-                    mask = label2rgb(mask, colors=MASK_COLOURS, bg_label=-1)
+                    mask = (label2rgb(mask, colors=MASK_COLOURS, bg_label=-1) * 255).astype(np.uint8)
 
                     im = estimator.apply_window(im)
-                    im = gray2rgb(im) / 255
+                    im = gray2rgb(im).astype(np.uint8)
 
                     composite_image = np.hstack([im, mask]).astype(np.uint8)
 
