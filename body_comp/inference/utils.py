@@ -291,7 +291,7 @@ def run_body_comp_csv(in_csv, input_dirs, output_dir, config_file=None, segmenta
     summary_file_path = os.path.join(output_dir, 'summary.csv')
     filtered_summary_file_path = os.path.join(output_dir, 'filtered_summary.csv')
     gather_results_to_csv(json_output_dir, summary_file_path, multislice=segmentation_range is not None)
-    slice_list = list(estimator_config['slice_params'].keys())
+    slice_list = list(estimator.slice_params.keys())
     filter_csv(summary_file_path, filtered_summary_file_path, slices=slice_list)
 
 
