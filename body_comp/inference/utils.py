@@ -26,7 +26,7 @@ MASK_COLOURS = (
 
 # Columns in the output csv file
 OUTPUT_COLUMN_ORDER = ('Project', 'Cohort', 'masterExamIdentifier', 'EMPI', 'Location', 'MRN', 'ACC', 'DateExam',
-                       'FoundImageData', 'ImageDataLocation', 'NumSeriesSelected', 'ExceptionEncountered',
+                       'StudyName', 'FoundImageData', 'ImageDataLocation', 'NumSeriesSelected', 'ExceptionEncountered',
                        'ExceptionMessage')
 
 # Limits used for the boundary checks of each component
@@ -45,7 +45,8 @@ def vert_location(v):
 
 def save_results_csv(study_summary_list, out_csv):
     # Save the results
-    df = pd.DataFrame(study_summary_list, columns=OUTPUT_COLUMN_ORDER)
+    columns = [c for c in OUTPUT_COLUMN_ORDER if c in study_summary_list[0].keys()]
+    df = pd.DataFrame(study_summary_list, columns=columns)
     df.to_csv(out_csv)
 
 
@@ -196,7 +197,7 @@ def run_body_comp_csv(in_csv, input_dirs, output_dir, config_file=None, segmenta
         out_df = pd.read_csv(
             out_csv,
             index_col=0,
-            dtype={k : str for k in ['MRN', 'ACC', 'EMPI', 'masterExamIdentifier']}
+            dtype={k : str for k in ['MRN', 'ACC', 'EMPI', 'masterExamIdentifier', 'StudyName']}
         )
 
         # Remove the studies that previously encountered exceptions so that they will be re-run
