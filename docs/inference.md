@@ -28,12 +28,17 @@ MRN,ACC
 314159,26535
 ```
 
+Alternatively, the CSV file may contain a column named `StudyName`, which
+should match the name of the directory in which the files for the study are
+stored if it uses some convention other than `MRN_ACC`.
+
 ### Running the Process
 
 The `run_from_csv.py` script is the main script for performing inference. It
-takes in a CSV file of MRNs and ACCs (described above), and data directories,
-runs inference on every study, including the series selection, slice selection,
-and segmentation steps, and then outputs the results into a results directory.
+takes in a CSV file of MRNs and ACCs or *StudyNames* (described above), and
+data directories, runs inference on every study, including the series
+selection, slice selection, and segmentation steps, and then outputs the
+results into a results directory.
 
 Basic usage looks like this:
 

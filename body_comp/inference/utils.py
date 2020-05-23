@@ -174,6 +174,14 @@ def run_body_comp_csv(in_csv, input_dirs, output_dir, config_file=None, segmenta
 
     # Read in the input list of studies
     in_df = pd.read_csv(in_csv, dtype=str)
+    if 'StudyName' in in_df.columns:
+        use_study_name = True
+    elif 'MRN' in in_df.columns and 'ACC' in in_df.columns:
+        use_study_name = False
+    else:
+        raise RuntimeError(
+            'The input CSV must contain either a StudyName column, or MRN and ACC columns'
+        )
 
     # Drop any of those annoying Unnamed columns that have crept in
     for c in in_df.columns:
@@ -196,25 +204,31 @@ def run_body_comp_csv(in_csv, input_dirs, output_dir, config_file=None, segmenta
             out_df = out_df[~out_df.ExceptionEncountered].copy()
 
         study_summary_list = out_df.to_dict('records')
-        existing_studies = set([row['MRN'] + '_' + row['ACC'] for row in study_summary_list])
+        if use_study_name:
+            existing_studies = set([row['StudyName'] for row in study_summary_list])
+        else:
+            existing_studies = set([row['MRN'] + '_' + row['ACC'] for row in study_summary_list])
     else:
         study_summary_list = []
 
     # Loop over studies
     for i, study_dict in enumerate(in_dicts):
 
-        mrn_acc = study_dict['MRN'] + '_' + study_dict['ACC']
+        if use_study_name:
+            study_name = study_dict['StudyName']
+        else:
+            study_name = study_dict['MRN'] + '_' + study_dict['ACC']
 
         # Skip this study if there are already results for it in the output directory
-        if keep_existing and mrn_acc in existing_studies:
+        if keep_existing and study_name in existing_studies:
             continue
-        print('{}/{}'.format(i, len(in_dicts)), mrn_acc)
+        print('{}/{}'.format(i, len(in_dicts)), study_name)
 
         study_summary = study_dict.copy()
 
         candidate_study_dirs = []
         for input_dir in input_dirs:
-            study_dir = os.path.join(input_dir, mrn_acc)
+            study_dir = os.path.join(input_dir, study_name)
             if os.path.exists(study_dir):
                 candidate_study_dirs.append(study_dir)
 
@@ -230,9 +244,9 @@ def run_body_comp_csv(in_csv, input_dirs, output_dir, config_file=None, segmenta
         else:
             study_summary['FoundImageData'] = True
 
-        # Create a temprary directory to store the regression plot before it is stitched into the composite
+        # Create a temporary directory to store the regression plot before it is stitched into the composite
         with TemporaryDirectory() as intermediate_output_dir:
-            output_plot = os.path.join(intermediate_output_dir, mrn_acc + '_{}_regression.png')
+            output_plot = os.path.join(intermediate_output_dir, study_name + '_{}_regression.png')
 
             for study_dir in candidate_study_dirs:
                 study_summary['ImageDataLocation'] = study_dir
@@ -264,11 +278,11 @@ def run_body_comp_csv(in_csv, input_dirs, output_dir, config_file=None, segmenta
 
             # Store numerical results as a JSON file
             study_results = {**study_results, **study_summary}
-            results_file = os.path.join(json_output_dir, mrn_acc + '.json')
+            results_file = os.path.join(json_output_dir, study_name + '.json')
             with open(results_file, 'w') as jsonfile:
                 json.dump(study_results, jsonfile, indent=2)
 
-            save_image_results(study_name=mrn_acc,
+            save_image_results(study_name=study_name,
                                study_results=study_results,
                                image_results=image_results,
                                output_plot=output_plot,
@@ -280,7 +294,7 @@ def run_body_comp_csv(in_csv, input_dirs, output_dir, config_file=None, segmenta
             if dicom_seg:
                 for series_uid, series_results in image_results['series'].items():
                     for slice_name, slice_results in series_results.items():
-                        seg_file = os.path.join(seg_output_dir, '{}_{}_{}'.format(mrn_acc, series_uid, slice_name))
+                        seg_file = os.path.join(seg_output_dir, '{}_{}_{}'.format(study_name, series_uid, slice_name))
                         slice_results['dicom_seg'].save_as(seg_file)
 
         # Store results
