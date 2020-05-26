@@ -20,4 +20,5 @@ brew install gdcm --with-python3
 
 Alternatively, you can get the `gdcm` package by directly downloading a release from the
 [github repository](https://github.com/malaterre/GDCM/releases) or installing from source (see the Dockerfile for an
-example of this process).
+example of this process). Note that you must have not just the C++ library, but also the Python bindings for Python 3
+installed.
