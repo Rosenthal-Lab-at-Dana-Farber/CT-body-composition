@@ -125,7 +125,7 @@ def save_image_results(study_name, study_results, image_results, output_plot, pr
                     imsave(image_path, composite_image)
 
 
-def run_body_comp_csv(in_csv, input_dirs, output_dir, config_file=None, segmentation_range=None, dicom_seg=False,
+def run_body_comp_csv(in_csv, input_dirs, output_dir, estimator_config=None, segmentation_range=None, dicom_seg=False,
                       keep_existing=False, use_directory_list=False, num_threads=10, rerun_exceptions=False,
                       recursive=False, min_slices_per_series=20):
 
@@ -140,10 +140,10 @@ def run_body_comp_csv(in_csv, input_dirs, output_dir, config_file=None, segmenta
             input_dirs = [d.rstrip('\n') for d in dir_file.readlines()]
 
     # Load in config file
-    if config_file is None:
+    if estimator_config is None:
         estimator_config = {}
-    else:
-        with open(config_file, 'r') as jsonfile:
+    elif isinstance(estimator_config, str) or isinstance(estimator_config, Path):
+        with open(str(estimator_config), 'r') as jsonfile:
             estimator_config = json.load(jsonfile)
 
     # Set up the model object

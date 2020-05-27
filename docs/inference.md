@@ -126,14 +126,18 @@ will be searched for DICOM files belonging to that study.
 DICOM segmentation format. This is a standard format that can be read and
 displayed by some DICOM viewers.
 
-`--config_file`, `-c` - By default, the process will use the default slice
-selection model to find the L3 slice and the default segmentation model to
-segment it. However these models may be customized, including adding additional
-levels of the abdomen/thorax to process. To do this, a new config file should be
-created in JSON format to specify the models.
-
 `--min_slices_per_series`, `-m` - Reject series with fewer than this number of
 images. Useful for rejecting small localizer series. Default: 20
+
+`--estimator_config`, `-c` - By default, the process will use the default slice
+selection model to find the L3 slice and the default segmentation model to
+segment it. However these models may be customized, including adding additional
+levels of the abdomen/thorax to process. If the `thoracic_body_comp`
+[package](https://gitlab.ccds.io/ml/ccds/thoracic_body_composition) package is
+installed on the system, then you may specify either `thoracic` or `thoracic+l3`
+in order to use the predefined configurations for T5, T8, T10 (and L3).
+In the general case, you may provide the path to a `.json` file that contains
+the configuration you wish to use.
 
 Here is the layout of an example configuration file:
 

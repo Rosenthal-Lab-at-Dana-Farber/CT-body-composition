@@ -11,7 +11,7 @@ if __name__ == '__main__':
     parser.add_argument('output_dir', help='Output directory for image results. Should be empty unless keep_existing '
                                            'is specified.')
     parser.add_argument('input_dirs', nargs='+', help='Directory(ies) containing input files')
-    parser.add_argument('--config_file', '-c', help='A json file containing parameters for the estimator')
+    parser.add_argument('--estimator_config', '-c', help='A json file containing parameters for the estimator')
     parser.add_argument('--num_threads', '-t', type=int, default=1, help='Number of threads to use')
     parser.add_argument('--segmentation_range', '-r', type=float,
                         help='Segment all slices with this range (leave unspecified for single slice)')
@@ -29,5 +29,16 @@ if __name__ == '__main__':
     parser.add_argument('--min_slices_per_series', '-m', type=int, default=20,
                         help='Reject series with fewer than this number of instances')
     args = parser.parse_args()
+
+    # Check for one of the special configurations
+    if args.estimator_config in {'thoracic', 'thoracic+l3'}:
+        try:
+            from thoracic_body_comp.config import get_preset_config
+        except ImportError:
+            raise ImportError('You must install the thoracic_body_comp package to use the thoracic configurations')
+        args.estimator_config = get_preset_config(args.estimator_config)
+    elif args.estimator_config == 'l3':
+        # L3 is the default config
+        args.estimator_config = None
 
     run_body_comp_csv(**vars(args))
