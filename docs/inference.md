@@ -133,7 +133,7 @@ images. Useful for rejecting small localizer series. Default: 20
 selection model to find the L3 slice and the default segmentation model to
 segment it. However these models may be customized, including adding additional
 levels of the abdomen/thorax to process. If the `thoracic_body_comp`
-[package](https://gitlab.ccds.io/ml/ccds/thoracic_body_composition) package is
+[package](https://gitlab.ccds.io/ml/ccds/thoracic_body_composition) is
 installed on the system, then you may specify either `thoracic` or `thoracic+l3`
 in order to use the predefined configurations for T5, T8, T10 (and L3).
 In the general case, you may provide the path to a `.json` file that contains
