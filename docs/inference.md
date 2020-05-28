@@ -54,13 +54,15 @@ At the end of the process, the results directory will contain several artifacts:
 
 `json_files/` - This directory contains the full results from the body
 composition analysis in JSON format.  There is one file per study, named with
-the study `MRN_ACC.json`.
+the study `{MRN}_{ACC}.json` (or `{StudyName}.json` if that convention was used
+in the input csv file).
 
-`previews/` - This directory contains preview images that may be used to check
-the results visually efficiently. There is one preview png file per *series*
-that was successfully processed by the algorithm (there are often multiple such
-series per study). Each file is named
-`{MRN}_{ACC}_{SeriesInstanceUID}_preview.png`.
+`previews/` - This directory contains preview images that may be used for
+efficient visual checking of the results. There is one preview png file per
+*series* that was successfully processed by the algorithm (there are often
+multiple such series per study). Each file is named
+`{MRN}_{ACC}_{SeriesInstanceUID}_preview.png` (or
+`{StudyName}_{SeriesInstanceUID}_preview.png`).
 
 `run_log.csv` - This file contains the basic results from running the
 model.  For each study listed in the input csv file, it lists whether the
