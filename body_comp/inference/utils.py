@@ -384,16 +384,43 @@ def gather_results_to_csv(input_dir, output_file, multislice=False, center=False
     pd.DataFrame(output_list).to_csv(output_file)
 
 
+def is_uid(col_name: str) -> bool:
+    '''Determine whether a column name from a CSV file represents a UID
+
+    Parameters
+    ----------
+    col_name: str
+        Name of the column
+
+    Returns
+    -------
+    bool
+        True if and only if the column name represents a uid
+
+    '''
+    if col_name in ('series_instance_uid', 'study_instance_uid'):
+        return True
+    if 'sop_instance_uid' in col_name:
+        return True
+    return False
+
+
 def filter_csv(input_csv: Path, output_csv: Path, choose_thickest: bool = True, slices=['L3'],
                boundary_checks: bool = False):
 
+    # Open the input csv with no rows to get the columns names
+    df = pd.read_csv(str(input_csv), index_col=0, nrows=0)
+
+    # Ensure any column containing a UID is read in as a string
+    column_types = {c: str for c in df.columns if is_uid(c)}
+
     # Open the input csv
-    df = pd.read_csv(str(input_csv), index_col=0)
+    df = pd.read_csv(str(input_csv), index_col=0, dtype=column_types)
     initial_len = len(df)
     initial_n_studies = df.study_name.nunique()
     print("initial studies", initial_n_studies)
 
-    # Initially include all series, then filter out unwanted ones 
+    # Initially include all series, then filter out unwanted ones
     ind = pd.Series(True, index=df.index)
 
     for slice_name in slices:
