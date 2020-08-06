@@ -1,6 +1,11 @@
 # CT Body Composition
 
-This repository provides code for training and running body composition estimation models on abdominal CT scans.
+This repository provides code for training and running body composition estimation models on abdominal CT scans. 
+It is a branch derived from Chris Bridge's code at CCDS but is relocated here to allow for access and development.
+We may have updates that we make pulled back into the main CCDS repository, but that is TBD.
+
+All code and documentation from the primary repository are credited to Chris Bridge.
+
 
 ### Getting Started
 
