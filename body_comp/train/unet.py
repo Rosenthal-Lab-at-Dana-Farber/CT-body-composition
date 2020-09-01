@@ -1,10 +1,10 @@
-from keras.models import Model
+from tensorflow.keras.models import Model
 from keras.layers import (
     Input, Conv2D, MaxPooling2D, UpSampling2D, Activation, concatenate, Dropout, GaussianDropout,
     AlphaDropout, BatchNormalization
 )
-from keras.activations import softmax
-from keras import backend as K
+from tensorflow.keras.activations import softmax
+from tensorflow.keras import backend as K
 
 
 def apply_dropout(inp, rate, dropout_type='standard', name=None):

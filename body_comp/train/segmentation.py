@@ -3,10 +3,10 @@ import os
 
 import numpy as np
 
-from keras.optimizers import Adam
-from keras.callbacks import TensorBoard, LearningRateScheduler
-from keras.utils import multi_gpu_model
-from keras.callbacks import ModelCheckpoint
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import TensorBoard, LearningRateScheduler
+from tensorflow.keras.utils import multi_gpu_model
+from tensorflow.keras.callbacks import ModelCheckpoint
 
 from body_comp.train.unet import get_unet_2D
 from body_comp.train.losses import dice_coef_multiclass_loss_2D

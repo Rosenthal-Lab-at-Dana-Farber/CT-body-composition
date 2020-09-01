@@ -1,7 +1,7 @@
 import numpy as np
 
-from keras.utils import Sequence
-from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.utils import Sequence
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 
 class SegmentationSequence(Sequence):

@@ -1,4 +1,4 @@
-from keras import backend as K
+from tensorflow.keras import backend as K
 
 
 def dice_coef_multiclass_2D(y_true, y_pred):
