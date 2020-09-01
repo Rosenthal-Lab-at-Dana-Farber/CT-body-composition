@@ -1,6 +1,10 @@
 from tensorflow.keras import backend as K
 
 
+# Constant to avoid dividing by zero
+smooth = 1.0
+
+
 def dice_coef_multiclass_2D(y_true, y_pred):
     """A keras implementation of the multiclass Dice coefficient
 
