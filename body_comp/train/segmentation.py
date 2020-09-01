@@ -28,7 +28,7 @@ def apply_window(image, win_centre, win_width):
     return image
 
 
-def train(epochs=100, data_dir, model_output_dir, batch_size=16, load_weights=None, name=None,
+def train(data_dir, model_output_dir, name=None, epochs=100, batch_size=16, load_weights=None,
           gpus=1, learning_rate=0.1, decay_half_time=20.0, apply_window_function=False, num_convs=2,
           activation='relu', compression_channels=[32, 64, 128, 256, 512], decompression_channels=[256, 128, 64, 32]):
 
