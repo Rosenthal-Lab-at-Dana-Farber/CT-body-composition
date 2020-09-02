@@ -18,12 +18,12 @@ if __name__ == '__main__':
     parser.add_argument('--learning_rate','-l', type=float, default=0.1, help='learning rate')
     parser.add_argument('--decay_half_time','-d', type=float, default=20,
                         help='number of epochs until learning rate should halve')
-    parser.add_argument('--compression_channels','-C', type=int, nargs='+', default=[32, 64, 128, 256, 512],
+    parser.add_argument('--compression_channels','-C', type=int, nargs='+', default=[16, 32, 64, 128, 256, 512],
                         help='list of (space separated) feature dimensions up the compression path')
-    parser.add_argument('--decompression_channels','-M', type=int, nargs='+', default=[256, 128, 64, 32],
+    parser.add_argument('--decompression_channels','-M', type=int, nargs='+', default=[256, 128, 64, 32, 16],
                         help='list of (space separated) feature dimensions up the decompression path')
     parser.add_argument('--activation','-A', default='relu', help='activation function to use')
-    parser.add_argument('--num_convs','-N', default=2, type=int, help='activation function to use')
+    parser.add_argument('--num_convs','-N', default=1, type=int, help='activation function to use')
 
     args = parser.parse_args()
 
