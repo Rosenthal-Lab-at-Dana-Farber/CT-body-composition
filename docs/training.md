@@ -62,10 +62,10 @@ $ python train_segmentation.py /path/to/data/ /path/to/models/
 There are a number of other options you can specify to tweak the model
 architecture and training procedure. Of particular note are:
 
-`-a` - Specify the name of the model (name of the output directory)
-`-g` - Specify the number of GPUs to use for training
-`-l` - Specify the initial learning rate
-`-b` - Specify the batch size
+* `-a` - Specify the name of the model (name of the output directory)
+* `-g` - Specify the number of GPUs to use for training
+* `-l` - Specify the initial learning rate
+* `-b` - Specify the batch size
 
 Run the help for a full list of options:
 
