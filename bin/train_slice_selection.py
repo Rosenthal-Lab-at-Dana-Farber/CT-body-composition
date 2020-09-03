@@ -6,9 +6,8 @@ from body_comp.train.slice_selection import train
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Train a densenet regression model to predict the selection offset')
-    parser.add_argument('--mount_point', '-m', default='/mnt/isilon-cpb28/', help='place where the isilon is mounted')
-    parser.add_argument('--data_cache', '-c',
-                        help="use a local cached copy of the data, rather than the isilon copy (for speed)")
+    parser.add_argument('data_dir', help='Location of the training data directory')
+    parser.add_argument('model_output_dir', help='Location where trained models are to be stored')
     parser.add_argument('--epochs', '-e', type=int, default=100, help='number of training epochs')
     parser.add_argument('--name', '-a', default='untitled', help='weights will be stored with this name')
     parser.add_argument('--gpus', '-g', type=int, default=1, help='number of gpus')
