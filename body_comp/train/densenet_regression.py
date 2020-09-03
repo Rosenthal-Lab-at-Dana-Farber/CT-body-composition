@@ -32,9 +32,9 @@ import tensorflow.keras.backend as K
 def conv_factory(x, nb_filter, dropout_rate=None, bottleneck=None, activation_type='relu',
                  batch_norm=True, initializer='glorot_uniform'):
 
-    if K.image_dim_ordering() == "th":
+    if K.image_data_format() == "channels_first":
         norm_axis = 1
-    elif K.image_dim_ordering() == "tf":
+    elif K.image_data_format() == "channels_last":
         norm_axis = 3
 
     if bottleneck:
@@ -62,9 +62,9 @@ def conv_factory(x, nb_filter, dropout_rate=None, bottleneck=None, activation_ty
 def transition(x, nb_filter, dropout_rate=None, compression_rate=1.0, activation_type='relu',
                initializer='glorot_uniform', batch_norm=True):
 
-    if K.image_dim_ordering() == "th":
+    if K.image_data_format() == "channels_first":
         norm_axis = 1
-    elif K.image_dim_ordering() == "tf":
+    elif K.image_data_format() == "channels_last":
         norm_axis = 3
 
     if batch_norm:
@@ -91,9 +91,9 @@ def denseblock(x, nb_layers, nb_filter, growth_rate,
 
     list_feat = [x]
 
-    if K.image_dim_ordering() == "th":
+    if K.image_data_format() == "channels_first":
         concat_axis = 1
-    elif K.image_dim_ordering() == "tf":
+    elif K.image_data_format() == "channels_last":
         concat_axis = -1
 
     for _ in range(nb_layers):
@@ -158,9 +158,9 @@ def DenseNet(img_dim, nb_layers_per_block, nb_dense_block, growth_rate,
         batch_norm=batch_norm
     )
 
-    if K.image_dim_ordering() == "th":
+    if K.image_data_format() == "channels_first":
       norm_axis = 1
-    elif K.image_dim_ordering() == "tf":
+    elif K.image_data_format() == "channels_last":
       norm_axis = 3
 
     if batch_norm:
