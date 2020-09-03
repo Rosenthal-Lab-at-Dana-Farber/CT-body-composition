@@ -21,13 +21,10 @@
 # SOFTWARE.
 
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers.core import Dense, Dropout, Activation
-from tensorflow.keras.layers.convolutional import Conv2D
-from tensorflow.keras.layers.pooling import AveragePooling2D, MaxPooling2D
-from tensorflow.keras.layers.pooling import GlobalAveragePooling2D
-from tensorflow.keras.layers import Input
-from tensorflow.keras.layers.merge import concatenate
-from tensorflow.keras.layers.normalization import BatchNormalization
+from tensorflow.keras.layers import (
+    Dense, Dropout, Activation, Conv2D, AveragePooling2D, MaxPooling2D, GlobalAveragePooling2D,
+    Input, concatenate, BatchNormalization
+)
 from tensorflow.keras.regularizers import l2
 import tensorflow.keras.backend as K
 
