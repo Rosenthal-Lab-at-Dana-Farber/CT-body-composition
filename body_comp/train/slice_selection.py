@@ -11,6 +11,7 @@ from tensorflow.keras.models import model_from_json
 import tensorflow as tf
 
 from body_comp.train.generators import SliceSelectionSequence
+from body_comp.train.densenet_regression import DenseNet
 
 
 def train(data_dir, model_output_dir, epochs=100, name=None, batch_size=16,
