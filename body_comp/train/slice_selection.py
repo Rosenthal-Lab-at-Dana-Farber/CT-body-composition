@@ -35,7 +35,7 @@ def train(data_dir, model_output_dir, epochs=100, name=None,
     )
 
     # Directories and files to use
-    if name not None:
+    if name is None:
         name = 'untitled_model_' + datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
     output_dir = os.path.join(model_output_dir, name)
     tflow_dir = os.path.join(output_dir, 'tensorboard_log')
