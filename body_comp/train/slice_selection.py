@@ -43,13 +43,13 @@ def train(data_dir, model_output_dir, epochs=100, name=None, batch_size=16,
     architecture_path = os.path.join(output_dir, 'architecture.json')
     tensorboard = TensorBoard(log_dir=tflow_dir, histogram_freq=0, write_graph=False, write_images=False)
 
-    args_path = os.path.join(output_dir, 'args.json')
-    with open(args_path, 'w') as json_file:
-        json.dump(args, json_file, indent=4)
-
     if load_weights is None:
         os.mkdir(output_dir)
         os.mkdir(tflow_dir)
+
+        args_path = os.path.join(output_dir, 'args.json')
+        with open(args_path, 'w') as json_file:
+            json.dump(args, json_file, indent=4)
 
         # Create the model
         print('Compiling model')
