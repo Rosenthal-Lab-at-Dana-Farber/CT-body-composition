@@ -89,21 +89,30 @@ def denseblock(x, nb_layers, nb_filter, growth_rate,
                initializer='glorot_uniform',
                batch_norm=True):
 
-    list_feat = [x]
+    output_feats = []
 
     if K.image_data_format() == "channels_first":
         concat_axis = 1
     elif K.image_data_format() == "channels_last":
         concat_axis = -1
 
-    for _ in range(nb_layers):
-        x = conv_factory(x, growth_rate, dropout_rate, bottleneck=True, activation_type=activation_type,
-                         initializer=initializer, batch_norm=batch_norm)
-        list_feat.append(x)
-        x = Concatenate(axis=concat_axis)(list_feat)
+    for i in range(nb_layers):
+        if i == 0:
+            dense_in = x
+        else:
+            dense_in = Concatenate(axis=concat_axis)([x] + output_feats)
+
+        new_feats = conv_factory(dense_in, growth_rate, dropout_rate, bottleneck=True, activation_type=activation_type,
+                                 initializer=initializer, batch_norm=batch_norm)
+        output_feats.append(new_feats)
         nb_filter += growth_rate
 
-    return x, nb_filter
+    if len(output_feats) == 1:
+        outputs = output_feats[0]
+    else:
+        outputs = Concatenate(axis=concat_axis)(output_feats)
+
+    return outputs, nb_filter
 
 
 def DenseNet(img_dim, nb_layers_per_block, nb_dense_block, growth_rate,
