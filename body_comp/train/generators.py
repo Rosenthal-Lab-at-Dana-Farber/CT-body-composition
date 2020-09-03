@@ -3,7 +3,7 @@ import numpy as np
 from tensorflow.keras.utils import Sequence
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-from scipy.misc import imread
+from imageio import imread
 from scipy.special import expit
 from skimage.transform import resize
 
