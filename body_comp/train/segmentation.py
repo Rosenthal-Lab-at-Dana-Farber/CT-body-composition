@@ -1,4 +1,5 @@
 import datetime
+import joson
 import os
 
 import numpy as np
@@ -32,6 +33,8 @@ def train(data_dir, model_output_dir, name=None, epochs=100, batch_size=16, load
           gpus=1, learning_rate=0.1, decay_half_time=20.0, apply_window_function=False, num_convs=2,
           activation='relu', compression_channels=[32, 64, 128, 256, 512], decompression_channels=[256, 128, 64, 32]):
 
+    args = locals()
+
     train_images_file = os.path.join(data_dir, 'train_images.npy')
     val_images_file = os.path.join(data_dir, 'val_images.npy')
     train_masks_file = os.path.join(data_dir, 'train_masks.npy')
@@ -60,6 +63,11 @@ def train(data_dir, model_output_dir, name=None, epochs=100, batch_size=16, load
     weights_path = os.path.join(output_dir, 'weights-{epoch:02d}-{val_loss:.4f}.hdf5')
     architecture_path = os.path.join(output_dir, 'architecture.json')
     tensorboard = TensorBoard(log_dir=tflow_dir, histogram_freq=0, write_graph=False, write_images=False)
+
+    args_path = os.path.join(output_dir, 'args.json')
+    with open(args_path, 'w') as json_file:
+        json.dump(args, json_file, indent=4)
+
 
     print('Creating and compiling model...')
     model = get_unet_2D(
