@@ -68,7 +68,7 @@ def train(data_dir, model_output_dir, epochs=100, name=None, batch_size=16,
                 activation_type=activation,
                 initializer=initializer,
                 output_dimension=nb_slices,
-                batch_norm=batch_norm)
+                batch_norm=batch_norm
             )
 
         # Save the architecture
