@@ -11,7 +11,7 @@ from tensorflow.keras.models import model_from_json
 from body_comp.train.generators import SliceSelectionSequence
 
 
-def train(data_dir, model_output_dir, epochs=100, name=None,
+def train(data_dir, model_output_dir, epochs=100, name=None, batch_size=16,
           gpus=1, learning_rate=0.1, nb_slices=1, threshold=10.0,
           load_weights=None, initial_epoch=0, nb_layers_per_block=4, nb_blocks=4,
           nb_initial_filters=16, growth_rate=12, compression_rate=0.5,
