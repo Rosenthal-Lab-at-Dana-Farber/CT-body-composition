@@ -23,7 +23,7 @@
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import (
     Dense, Dropout, Activation, Conv2D, AveragePooling2D, MaxPooling2D, GlobalAveragePooling2D,
-    Input, concatenate, BatchNormalization
+    Input, Concatenate, BatchNormalization
 )
 from tensorflow.keras.regularizers import l2
 import tensorflow.keras.backend as K
@@ -100,7 +100,7 @@ def denseblock(x, nb_layers, nb_filter, growth_rate,
         x = conv_factory(x, growth_rate, dropout_rate, bottleneck=True, activation_type=activation_type,
                          initializer=initializer, batch_norm=batch_norm)
         list_feat.append(x)
-        x = concatenate(list_feat, axis=concat_axis)
+        x = Concatenate(axis=concat_axis)(list_feat)
         nb_filter += growth_rate
 
     return x, nb_filter
