@@ -18,7 +18,7 @@ def train(data_dir, model_output_dir, epochs=100, name=None, batch_size=16,
           gpus=1, learning_rate=0.1, nb_slices=1, threshold=10.0,
           load_weights=None, initial_epoch=0, nb_layers_per_block=4, nb_blocks=4,
           nb_initial_filters=16, growth_rate=12, compression_rate=0.5,
-          activation='relu', initializer='glorot_uniform', omit_batch_norm=False):
+          activation='relu', initializer='glorot_uniform', batch_norm=True):
 
     args = locals()
 
@@ -68,7 +68,7 @@ def train(data_dir, model_output_dir, epochs=100, name=None, batch_size=16,
                 activation_type=activation,
                 initializer=initializer,
                 output_dimension=nb_slices,
-                batch_norm=(not omit_batch_norm)
+                batch_norm=batch_norm)
             )
 
         # Save the architecture

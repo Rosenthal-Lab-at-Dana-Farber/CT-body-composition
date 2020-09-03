@@ -26,7 +26,8 @@ if __name__ == '__main__':
     parser.add_argument('--compression_rate', default=0.5, type=float, help="densenet compression rate parameter")
     parser.add_argument('--initializer', '-I', default='glorot_uniform', help="initializer for weights in the network")
     parser.add_argument('--activation', '-A', default='relu', help="activation for units in the network")
-    parser.add_argument('--omit_batch_norm', '-B', action='store_false', help="omit batch normalization")
+    parser.add_argument('--omit_batch_norm', '-B', action='store_false', dest='batch_norm',
+                        help="omit batch normalization")
     args = parser.parse_args()
 
     model = train(**vars(args))

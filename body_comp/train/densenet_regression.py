@@ -100,7 +100,7 @@ def denseblock(x, nb_layers, nb_filter, growth_rate,
         x = conv_factory(x, growth_rate, dropout_rate, bottleneck=True, activation_type=activation_type,
                          initializer=initializer, batch_norm=batch_norm)
         list_feat.append(x)
-        x = concatenate(list_feat,axis=concat_axis)
+        x = concatenate(list_feat, axis=concat_axis)
         nb_filter += growth_rate
 
     return x, nb_filter
