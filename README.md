@@ -20,4 +20,5 @@ you may build a docker image that contains all the necessary requirements.
 See the documentation pages for further details:
 * [Installation](docs/installation.md) - For installing directly on your system
 * [Docker](docs/docker.md) - For building and using the docker image
+* [Training](docs/training.md) - For training new models
 * [Inference](docs/inference.md) - For running the model on new data
