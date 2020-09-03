@@ -9,7 +9,7 @@ if __name__ == '__main__':
     parser.add_argument('data_dir', help='Location of the training data directory')
     parser.add_argument('model_output_dir', help='Location where trained models are to be stored')
     parser.add_argument('--epochs', '-e', type=int, default=100, help='number of training epochs')
-    parser.add_argument('--name', '-a', default='untitled', help='weights will be stored with this name')
+    parser.add_argument('--name', '-a', help='weights will be stored with this name')
     parser.add_argument('--gpus', '-g', type=int, default=1, help='number of gpus')
     parser.add_argument('--batch_size', '-b', type=int, default=16, help='batch size')
     parser.add_argument('--learning_rate', '-l', type=float, default=0.0001, help='learning rate')

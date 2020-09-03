@@ -7,6 +7,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import TensorBoard, LearningRateScheduler, ModelCheckpoint
 from tensorflow.keras.utils import multi_gpu_model
 from tensorflow.keras.models import model_from_json
+import tensorflow as tf
 
 from body_comp.train.generators import SliceSelectionSequence
 
