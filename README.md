@@ -4,7 +4,8 @@ This repository provides code for training and running body composition estimati
 It is a branch derived from Chris Bridge's code at CCDS but is relocated here to allow for access and development.
 We may have updates that we make pulled back into the main CCDS repository, but that is TBD.
 
-All code and documentation from the primary repository are credited to Chris Bridge.
+All code and documentation from the primary repository are credited to Chris Bridge. The R code in the `stats`
+directory was written by Camden Bay.
 
 
 ### Getting Started
