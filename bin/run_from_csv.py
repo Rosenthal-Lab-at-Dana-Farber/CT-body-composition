@@ -28,6 +28,8 @@ if __name__ == '__main__':
                         help='Save dicom seg files')
     parser.add_argument('--min_slices_per_series', '-m', type=int, default=20,
                         help='Reject series with fewer than this number of instances')
+    parser.add_argument('--loglevel', '-i', choices=['debug', 'info', 'warning'],
+                        help='Specify logging level')
     args = parser.parse_args()
 
     # Check for one of the special configurations

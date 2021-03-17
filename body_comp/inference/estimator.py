@@ -1,5 +1,6 @@
 import functools
 import multiprocessing as mp
+import logging
 import os
 from collections import defaultdict
 
@@ -30,6 +31,9 @@ from skimage.transform import resize
 import matplotlib
 matplotlib.use('Agg')
 from matplotlib import pyplot as plt
+
+
+logger = logging.getLogger(__name__)
 
 
 MODEL_NAME = 'CCDS Body Composition Estimation'
@@ -207,8 +211,9 @@ class BodyCompositionEstimator:
             results = [self.read_file(f, list_tags=list_tags, stop_before_pixels=stop_before_pixels)
                        for f in files_list]
 
-        results = [dcm for dcm in results if dcm is not None]
-        return results
+        # Remove files that failed to load from both lists
+        results, adjusted_file_list = zip(*[(dcm, f) for dcm, f in zip(results, files_list) if dcm is not None])
+        return results, adjusted_file_list
 
     # Windowing function
     def apply_window(self, image):
@@ -449,18 +454,22 @@ class BodyCompositionEstimator:
                                      for c in range(1, num_classes + 1)]
         return per_class_boundary_checks
 
-    @staticmethod
-    def find_valid_series(datasets_list, identifier_list, min_slices=None):
+    @classmethod
+    def find_valid_series(cls, datasets_list, identifier_list, min_slices=None):
 
         # This will contain a list of filenames for each series that passes series selection,
         # with the series instance UID string used as the key
         valid_series = defaultdict(list)
 
         for iden, dcm in zip(identifier_list, datasets_list):
-            if (dcm is not None) and BodyCompositionEstimator.use_series(dcm):
-                valid_series[dcm.SeriesInstanceUID].append(iden)
+            if (dcm is not None):
+                if dcm.SeriesInstanceUID in valid_series or cls.use_series(dcm):
+                    valid_series[dcm.SeriesInstanceUID].append(iden)
 
         if min_slices is not None:
+            for k, v in valid_series.items():
+                if len(v) < min_slices:
+                    logger.debug(f'Removing series {k} on basis of number of slices ({len(v)})')
             valid_series = {k: v for k, v in valid_series.items() if len(v) >= min_slices}
 
         return valid_series
@@ -468,14 +477,25 @@ class BodyCompositionEstimator:
     # Check whether a pydicom dataset belongs to a series that should be used
     @staticmethod
     def use_series(dcm):
+        desc = dcm.SeriesDescription if 'SeriesDescription' in dcm else '<empty description>'
+        logger.debug(f'Considering series "{desc}": {dcm.SeriesInstanceUID}')
         if 'ImageType' not in dcm:  # No image type field
+            logger.debug('No image type tag found')
             if 'ImageOrientationPatient' in dcm and dcm.ImageOrientationPatient == [1, 0, 0, 0, 1, 0]:
+                logger.debug('Accepting series on basis of ImageOrientationPatient')
                 return True
-            else:
+            elif 'ImageOrientationPatient' in dcm:
+                logger.debug('Rejecting series on basis of ImageOrientationPatient: {dcm.ImageOrientationPatient}')
                 return False
+            else:
+                logger.debug('Rejecting series on basis of missing ImageOrientationPatient')
+                return False
+
+        logger.debug(f'Image type: {dcm.ImageType}')
 
         # These images are dual-enegry images and are known to cause problems (not HU-based)
         if 'GSI MD' in dcm.ImageType:
+            logger.debug('Rejecting series due to GSI MD image type (dual energy material decomposition image)')
             return False
 
         if all((kw in dcm.ImageType for kw in ['ORIGINAL', 'PRIMARY', 'AXIAL'])) or \
@@ -483,8 +503,10 @@ class BodyCompositionEstimator:
                (dcm.ImageType == ['DERIVED', 'SECONDARY', 'AXIAL', 'LOSSY_COMPRESSED']) or \
                (dcm.ImageType == ['ORIGINAL', 'SECONDARY', 'AXIAL']) or \
                (dcm.ImageType == ['DERIVED', 'PRIMARY', 'AXIAL', 'CT_SOM5 SPI']):
+            logger.debug('Accepting series on basis of ImageType')
             return True
 
+        logger.debug('Rejecting series on basis of ImageType')
         return False
 
     def process_directory(self, dir_name, slices=None, save_plot='', segmentation_range=None, recursive=False,
@@ -546,15 +568,23 @@ class BodyCompositionEstimator:
                         files_list.append(full_file)
         else:
             files_list = [os.path.join(dir_name, f) for f in os.listdir(dir_name)]
-        datasets_list = self.read_files_list(files_list, list_tags=series_selection_tags, stop_before_pixels=True)
+        logger.debug(f'Found {len(files_list)} files')
+        datasets_list, files_list = self.read_files_list(files_list, list_tags=series_selection_tags, stop_before_pixels=True)
+        logger.debug(f'Successfully read {len(files_list)} DICOM files')
 
         valid_series = self.find_valid_series(datasets_list, files_list, self.min_slices_per_series)
+        logger.debug(f'Found {len(valid_series)} valid series')
 
         # Run the full procedure on all series that passed series selection and have the required number of slices
         results = {'series': {}}
         image_results = {'series': {}}
         for series_uid, series_files_list in valid_series.items():
-            series_datasets = self.read_files_list(series_files_list, stop_before_pixels=False)
+            series_datasets, series_files_list = self.read_files_list(series_files_list, stop_before_pixels=False)
+            desc = (
+                series_datasets[0].SeriesDescription if 'SeriesDescription' in series_datasets[0]
+                else '<empty description>'
+            )
+            logger.debug(f'Running inference for series "{desc}": {series_uid}')
             series_plot_name = save_plot.format(series_uid)
             try:
                 results['series'][series_uid], image_results['series'][series_uid] = \
@@ -564,6 +594,7 @@ class BodyCompositionEstimator:
                                                  save_plot=series_plot_name,
                                                  return_dicom_seg=return_dicom_seg)
             except DICOMDecompressionError:
+                logger.debug(f'Encountered decompression error for series {desc}: {series_uid}')
                 # Skip this series
                 continue
 
@@ -611,7 +642,7 @@ class BodyCompositionEstimator:
         """
         # Read in the list of files
         full_files_list = [os.path.join(dir_name, f) for f in files_list]
-        datasets_list = self.read_files_list(full_files_list, stop_before_pixels=False)
+        datasets_list, full_files_list = self.read_files_list(full_files_list, stop_before_pixels=False)
 
         # Run on the list of datasets and return results
         return self.process_series_datasets(datasets_list, slices, save_plot=save_plot, gt_index=gt_index,
