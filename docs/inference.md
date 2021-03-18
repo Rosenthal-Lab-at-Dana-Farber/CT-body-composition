@@ -131,6 +131,9 @@ displayed by some DICOM viewers.
 `--min_slices_per_series`, `-m` - Reject series with fewer than this number of
 images. Useful for rejecting small localizer series. Default: 20
 
+`--loglevel`, `-i` - Control the log level of the estimator code.
+Set to `'debug'` for complete series selection debugging information.
+
 `--estimator_config`, `-c` - By default, the process will use the default slice
 selection model to find the L3 slice and the default segmentation model to
 segment it. However these models may be customized, including adding additional

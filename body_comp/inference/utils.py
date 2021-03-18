@@ -1,3 +1,4 @@
+import logging
 import os
 from pathlib import Path
 import json
@@ -127,7 +128,16 @@ def save_image_results(study_name, study_results, image_results, output_plot, pr
 
 def run_body_comp_csv(in_csv, input_dirs, output_dir, estimator_config=None, segmentation_range=None, dicom_seg=False,
                       keep_existing=False, use_directory_list=False, num_threads=10, rerun_exceptions=False,
-                      recursive=False, min_slices_per_series=20):
+                      recursive=False, min_slices_per_series=20, loglevel=None):
+
+    logging.basicConfig()
+    if loglevel is not None:
+        try:
+            level = getattr(logging, loglevel.upper())
+        except AttributeError:
+            raise ValueError(f'Unrecognized log level: {loglevel}')
+        print("Setting level to ", level)
+        logging.getLogger('body_comp.inference.estimator').setLevel(level)
 
     if rerun_exceptions and not keep_existing:
         raise ValueError('Enabling rerun_exceptions is not valid if keep_existing is not enabled')
