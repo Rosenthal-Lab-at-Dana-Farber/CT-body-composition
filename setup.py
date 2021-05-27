@@ -12,7 +12,7 @@ setuptools.setup(
     url='https://gitlab.ccds.io/ml/ccds/ct_body_composition',
     platforms=['Linux'],
     packages=setuptools.find_packages(),
-    python_requires='>=3.6',
+    python_requires='>=3.6,<3.8',
     install_requires=[
         'numpy>=1.16.0',
         'tensorflow<2.0',
@@ -22,6 +22,7 @@ setuptools.setup(
         'pydicom>=1.4.1',
         'pandas>=1.0.3',
         'highdicom>=0.3.0',
+        'h5py<3.0',
     ],
     package_data={
         '': ['models/*.hdf5', 'configs/*.json'],
