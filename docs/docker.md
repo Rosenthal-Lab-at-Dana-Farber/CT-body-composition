@@ -39,7 +39,7 @@ $ sudo docker run -it -v /path/to/data/:/data/ body_comp:latest bash
 ### Running Code Inside the Container
 
 After executing the command above, you should find yourself in the
-`/bin/body_comp` directory in the container. You will find all the files for
+`/body_comp/bin` directory in the container. You will find all the files for
 running the model in this directory (as described in the other documentation
 pages). The environment should all be set up and you should be able to run
 these python files straight away.
