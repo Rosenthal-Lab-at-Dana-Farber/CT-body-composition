@@ -640,7 +640,8 @@ class BodyCompositionEstimator(Component):
                 pixel_spacing = dcm.PixelSpacing
                 pixel_area = float(pixel_spacing[0]) * float(pixel_spacing[1]) / 100.0
 
-                # Find the reconstruction radius in pixel units and use it to perform a boundary check if it's there
+                # Find the reconstruction radius in pixel units and use it to
+                # perform a boundary check if it's there
                 if "ReconstructionDiameter" in dcm:
                     rec_diameter = float(dcm.ReconstructionDiameter)
                     rec_radius_pix = 0.5 * (rec_diameter / float(pixel_spacing[0]))
@@ -741,7 +742,7 @@ class BodyCompositionEstimator(Component):
                             if slice_results["dicom_seg"]:
                                 seg_file = os.path.join(
                                     self.seg_output_dir,
-                                    "{}_{}_{}".format(
+                                    "{}_{}_{}.dcm".format(
                                         study_summary["study_name"],
                                         series_uid,
                                         slice_name,
