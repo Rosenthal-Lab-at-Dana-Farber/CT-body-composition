@@ -9,7 +9,7 @@ setuptools.setup(
     description='Package for training and deployment neural networks for body composition analysis of abdominal CTs',
     author='Christopher P. Bridge',
     maintainer='Christopher P. Bridge',
-    url='https://gitlab.ccds.io/ml/ccds/ct_body_composition',
+    url='https://gitlab.partners.org/mr118/ct_body_composition',
     platforms=['Linux'],
     packages=setuptools.find_packages(),
     python_requires='>=3.6,<3.8',
@@ -23,6 +23,7 @@ setuptools.setup(
         'pandas>=1.0.3',
         'highdicom>=0.3.0',
         'h5py<3.0',
+        'python-gdcm>=3.0.0',
     ],
     package_data={
         '': ['models/*.hdf5', 'configs/*.json'],

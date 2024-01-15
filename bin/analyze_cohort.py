@@ -119,7 +119,10 @@ if __name__ == "__main__":
     parser.add_argument("root", help="Directory containing input files")
     parser.add_argument(
         "output_dir",
-        help="Output directory for image results. Should be empty unless keep_existing is specified.",
+        help=(
+            "Output directory for image results. Should be empty unless "
+            "keep_existing is specified."
+        ),
     )
     parser.add_argument(
         "--estimator_config",
@@ -133,7 +136,10 @@ if __name__ == "__main__":
         "--segmentation_range",
         "-r",
         type=int,
-        help="Segment all slices with this range (leave unspecified for single slice)",
+        help=(
+            "Segment all slices with this distance (in mm) of the selected slice. "
+            "Leave unspecified for single slice."
+        ),
     )
     parser.add_argument(
         "--keep_existing",
@@ -152,10 +158,14 @@ if __name__ == "__main__":
         help="Reject series with fewer than this number of instances",
     )
     parser.add_argument(
-        "--slice_selection",
+        "--no_slice_selection",
         "-s",
         action="store_false",
-        help="If true, perform slice selection as part of analysis pipeline",
+        dest="slice_selection",
+        help=(
+            "Do not perform slice selection as part of analysis pipeline. "
+            "By default, slice selection is performed."
+        ),
     )
     args = parser.parse_args()
 
