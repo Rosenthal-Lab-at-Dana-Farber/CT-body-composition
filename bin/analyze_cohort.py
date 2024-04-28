@@ -139,7 +139,6 @@ def main(args):
 
     multislice = args.segmentation_range is not None
 
-    # if not using slice selection in above pipeline, "slice_selection" needs to be set to False
     write_results_to_csv(
         pipeline.cohort_summary,
         os.path.join(args.output_dir, "results.csv"),

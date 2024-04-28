@@ -35,7 +35,7 @@ SERIES_LEVEL_TAGS = {
     "series_description": {"keyword": "SeriesDescription", "type": str},
     "acquisition_date": {"keyword": "AcquisitionDate", "type": str},
     "acquisition_time": {"keyword": "AcquisitionTime", "type": str},
-    "series_uid": {"keyword": "SeriesInstanceUID", "type": str},
+    "series_instance_uid": {"keyword": "SeriesInstanceUID", "type": str},
 }
 
 STUDY_LEVEL_TAGS = {

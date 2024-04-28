@@ -125,7 +125,7 @@ class CheckCircleCrop(Component):
             max(list(self.rec_diams.values())) - min(list(self.rec_diams.values()))
             > self.threshold
         ):
-            if self.rec_diams[series_summary["series_uid"]] + self.threshold < max(
+            if self.rec_diams[series_summary["series_instance_uid"]] + self.threshold < max(
                 list(self.rec_diams.values())
             ):
                 series_summary["valid"] = False

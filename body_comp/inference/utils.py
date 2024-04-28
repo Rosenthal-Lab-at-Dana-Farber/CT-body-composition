@@ -208,50 +208,50 @@ def write_results_to_csv(
             [series_data["valid"] for _, series_data in study_summary["UIDs"].items()]
         )
 
-        for series_uid, series_data in study_summary["UIDs"].items():
+        for uid, results_data in study_summary["UIDs"].items():
 
-            if not series_data["valid"]:
+            if not results_data["valid"]:
                 continue
 
-            series_results = {"study_path": study_path}
-            series_results["study_name"] = study_summary["study_name"]
-
-            series_results["series_instance_uid"] = series_uid
-            series_results["num_images"] = len(series_data["files"])
-
-            series_results["num_valid_series"] = num_valid_series
+            outputs_results = {"study_path": study_path}
+            outputs_results["study_name"] = study_summary["study_name"]
 
             # Study level information
             for key in STUDY_LEVEL_TAGS:
                 if key in study_summary:
-                    series_results[key] = study_summary[key]
+                    outputs_results[key] = study_summary[key]
 
             # Series level information
             for key in SERIES_LEVEL_TAGS:
-                if key in series_data:
-                    series_results[key] = series_data[key]
+                if key in results_data:
+                    outputs_results[key] = results_data[key]
 
             if slice_selection:
+                outputs_results["series_instance_uid"] = uid
+                outputs_results["num_images"] = len(results_data["files"])
+                outputs_results["num_valid_series"] = num_valid_series
 
-                for slice_name, slice_data in series_data["slice selection"]["results"][
+                for slice_name, slice_data in results_data["slice selection"]["results"][
                     "slices"
                 ].items():
 
-                    series_results["slice_index"] = series_data["slice selection"][
+                    outputs_results["slice_index"] = results_data["slice selection"][
                         "results"
                     ]["slices"][slice_name]["index"]
-                    series_results[
-                        "{}_zero_crossings".format(slice_name)
-                    ] = series_data["slice selection"]["results"]["slices"][slice_name][
+                    outputs_results[
+                        f"{slice_name}_zero_crossings"
+                    ] = results_data["slice selection"]["results"]["slices"][slice_name][
                         "num_zero_crossings"
                     ]
-                    series_results[
-                        "{}_regression_val".format(slice_name)
-                    ] = series_data["slice selection"]["results"]["slices"][slice_name][
+                    outputs_results[
+                        f"{slice_name}_regression_val"
+                    ] = results_data["slice selection"]["results"]["slices"][slice_name][
                         "regression_val"
                     ]
+            else:
+                outputs_results["sop_instance_uid"] = uid
 
-            for slice_name, slice_data in series_data["body composition"]["results"][
+            for slice_name, slice_data in results_data["body composition"]["results"][
                 "slices"
             ].items():
 
@@ -265,22 +265,19 @@ def write_results_to_csv(
                             # Copy over instance-level metadata
                             for key in INSTANCE_LEVEL_TAGS:
                                 if key in slice_data:
-                                    series_results[
-                                        "{}_{}".format(slice_name, key)
-                                    ] = slice_data[key]
+                                    outputs_results[f"{slice_name}_{key}"] = slice_data[key]
 
-                            series_results[
-                                "{}_sop_instance_uid".format(slice_name)
+                            outputs_results[
+                                f"{slice_name}_sop_instance_uid"
                             ] = slice_data["sop_instance_uid"]
-                            series_results[
-                                "{}_z_location".format(slice_name)
+                            outputs_results[
+                                f"{slice_name}_z_location"
                             ] = slice_data["z_location"]
                             break
                     else:
                         print(
-                            "Warning: no center slice found for {} in study {} series {}!".format(
-                                slice_name, series_results["study_name"], series_uid
-                            )
+                            f"Warning: no center slice found for {slice_name} in study "
+                            f"{outputs_results['study_name']} series {uid}!"
                         )
                         continue
                     if not center:
@@ -290,16 +287,19 @@ def write_results_to_csv(
                     # Copy over instance-level metadata
                     for key in INSTANCE_LEVEL_TAGS:
                         if key in slice_data:
-                            series_results[
-                                "{}_{}".format(slice_name, key)
-                            ] = slice_data[key]
+                            outputs_results[f"{slice_name}_{key}"] = slice_data[key]
 
-                    series_results[
-                        "{}_sop_instance_uid".format(slice_name)
-                    ] = slice_data["sop_instance_uid"]
-                    series_results["{}_z_location".format(slice_name)] = slice_data[
-                        "z_location"
-                    ]
+                    if slice_selection:
+                        outputs_results[
+                            f"{slice_name}_sop_instance_uid"
+                        ] = slice_data["sop_instance_uid"]
+                        outputs_results[f"{slice_name}_z_location"] = slice_data[
+                            "z_location"
+                        ]
+                    else:
+                        outputs_results["z_location"] = slice_data[
+                            "z_location"
+                        ]
 
                     # Simple single slice anaysis - use results from the single slice
                     tissue_items = slice_data["tissues"].items()
@@ -314,11 +314,11 @@ def write_results_to_csv(
                         "iqr_hu",
                         "boundary_check",
                     ]:
-                        series_results[
+                        outputs_results[
                             "{}_{}_{}".format(slice_name, tissue_name, prop)
                         ] = tissue_data[prop]
 
-            output_list.append(series_results)
+            output_list.append(outputs_results)
 
     pd.DataFrame(output_list).to_csv(output_file)
 
