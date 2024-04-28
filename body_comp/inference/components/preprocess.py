@@ -50,21 +50,25 @@ class FindSeries(Component):
             stop_before_pixels=self.stop_before_pixels,
         )
 
-        study_summary[
-            "study_name"
-        ] = f"{datasets[0].PatientID}_{datasets[0].AccessionNumber}"
+        study_name = f"{datasets[0].PatientID}_{datasets[0].AccessionNumber}"
+        study_summary["study_name"] = study_name
+
+        study_uid = datasets[0].StudyInstanceUID
 
         for file, dcm in zip(study_summary["files"], datasets):
-            if dcm is not None:
-                study_summary["UIDs"][dcm.SeriesInstanceUID]["files"].append(file)
-                study_summary["UIDs"][dcm.SeriesInstanceUID]["datasets"].append(dcm)
-                study_summary["UIDs"][dcm.SeriesInstanceUID][
-                    "PrimaryUID"
-                ] = dcm.SeriesInstanceUID
-
-                study_summary["UIDs"][dcm.SeriesInstanceUID]["droppable_keys"].append(
-                    "datasets"
+            if dcm.StudyInstanceUID != study_uid:
+                raise RuntimeError(
+                    f"Found mismatched study instance UIDs within {study_name}"
                 )
+            study_summary["UIDs"][dcm.SeriesInstanceUID]["files"].append(file)
+            study_summary["UIDs"][dcm.SeriesInstanceUID]["datasets"].append(dcm)
+            study_summary["UIDs"][dcm.SeriesInstanceUID][
+                "PrimaryUID"
+            ] = dcm.SeriesInstanceUID
+
+            study_summary["UIDs"][dcm.SeriesInstanceUID]["droppable_keys"].append(
+                "datasets"
+            )
 
         return study_summary
 
@@ -115,18 +119,22 @@ class FindSlices(Component):
         )
 
         study_summary["study_name"] = study_summary["files"][0].split("/")[-2]
+        study_uid = datasets[0].StudyInstanceUID
 
         for file, dcm in zip(study_summary["files"], datasets):
-            if dcm is not None:
-                study_summary["UIDs"][dcm.SOPInstanceUID]["Path"] = file
-                study_summary["UIDs"][dcm.SOPInstanceUID]["datasets"].append(dcm)
-                study_summary["UIDs"][dcm.SOPInstanceUID][
-                    "PrimaryUID"
-                ] = dcm.SOPInstanceUID
-
-                study_summary["UIDs"][dcm.SOPInstanceUID]["droppable_keys"].append(
-                    "datasets"
+            if dcm.StudyInstanceUID != study_uid:
+                raise RuntimeError(
+                    f"Found mismatched study instance UIDs within {study_name}"
                 )
+            study_summary["UIDs"][dcm.SOPInstanceUID]["Path"] = file
+            study_summary["UIDs"][dcm.SOPInstanceUID]["datasets"].append(dcm)
+            study_summary["UIDs"][dcm.SOPInstanceUID][
+                "PrimaryUID"
+            ] = dcm.SOPInstanceUID
+
+            study_summary["UIDs"][dcm.SOPInstanceUID]["droppable_keys"].append(
+                "datasets"
+            )
 
         return study_summary
 

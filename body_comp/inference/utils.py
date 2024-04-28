@@ -166,9 +166,7 @@ def rescale_shift(image, intercept, slope):
 ### Functions for writing results to csv files
 
 
-def write_qc_to_csv(
-    results, output_file, multislice=False, center=False, slice_selection=False
-):
+def write_qc_to_csv(results, output_file):
 
     output_list = []
 
@@ -281,7 +279,7 @@ def write_results_to_csv(
                     else:
                         print(
                             "Warning: no center slice found for {} in study {} series {}!".format(
-                                slice_name, study_name, series_uid
+                                slice_name, series_results["study_name"], series_uid
                             )
                         )
                         continue

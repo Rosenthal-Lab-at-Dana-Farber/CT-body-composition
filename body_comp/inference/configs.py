@@ -43,6 +43,7 @@ STUDY_LEVEL_TAGS = {
     "study_date": {"keyword": "StudyDate", "type": str},
     "accession_number": {"keyword": "AccessionNumber", "type": str},
     "study_description": {"keyword": "StudyDescription", "type": str},
+    "study_instance_uid": {"keyword": "StudyInstanceUID", "type": str},
 }
 
 

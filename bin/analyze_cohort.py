@@ -123,6 +123,7 @@ def main(args):
         series=args.slice_selection,
         summary_path=summary_path,
         study_depth=args.study_depth,
+        keep_existing=args.keep_existing,
     )
 
     pipeline.save_cohort_summary(summary_path)

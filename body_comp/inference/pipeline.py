@@ -40,7 +40,14 @@ class Pipeline:
             out += "])"
             return out
 
-    def apply(self, root, series=True, study_depth=None, summary_path=None):
+    def apply(
+        self,
+        root,
+        series=True,
+        study_depth=None,
+        summary_path=None,
+        keep_existing=False,
+    ):
         """Apply component sequence to directory recursively starting at root.
 
         This function assumes any sets of files found in different subfolders
@@ -67,6 +74,11 @@ class Pipeline:
         summary_path: str | None
             If non-None, the summary JSON is written out to this path after
             each study is processed.
+        keep_existing: bool
+            If True and an existing summary file exists, reads the existing
+            summary file, skips any studies already in it, and appends new
+            results to the existing file. If False, or no summary file exists,
+            processes all studies in the root directory.
 
         """
         if not self.components:
@@ -91,6 +103,20 @@ class Pipeline:
                 ]
             else:
                 raise ValueError("Study depth must be a non-negative integer")
+
+        print(f"Found {len(study_dirs)} studies in root directory.")
+
+        if keep_existing and os.path.exists(summary_path):
+            # Read existing summary file and remove cases that have already
+            # been processed from the to-do list
+            self.read_cohort_summary(summary_path)
+            print(
+                f"Loaded existing results from {len(self.cohort_summary)} "
+                "studies"
+            )
+            study_dirs = [
+                d for d in study_dirs if str(d) not in self.cohort_summary
+            ]
 
         for count, study_dir in enumerate(study_dirs):
             print(f"Analyzing study {count}/{len(study_dirs)}: {study_dir}")
@@ -127,3 +153,8 @@ class Pipeline:
                 default=default,
                 indent=2
             )
+
+    def read_cohort_summary(self, filename):
+        with open(filename, "r") as infile:
+            self.cohort_summary = json.load(infile)
+
