@@ -180,7 +180,9 @@ if __name__ == "__main__":
         type=int,
         help=(
             "Segment all slices with this distance (in mm) of the selected slice. "
-            "Leave unspecified for single slice."
+            "Leave unspecified for single slice. Note that this option requires "
+            "that slice selection is *not* disabled with the --no_slice_selection "
+            "option."
         ),
     )
     parser.add_argument(
@@ -199,18 +201,6 @@ if __name__ == "__main__":
         default=20,
         help="Reject series with fewer than this number of instances",
     )
-    (
-        "If not provided, every subdirectory at any level of the hierarchy under "
-        "'root' that contains files is considered a study. If study_depth is "
-        "a non-negative integer, then each directory that number of levels "
-        "below route is considered a study. E.g. if study_depth is 0, the "
-        "root directory itself is a single study. If study_depth is 1, each "
-        "sub-directory of root is considered a study. If study_depth is 2, "
-        "each sub-directory of a sub-directory of root is considered a "
-        "study, etc. If this option is used, any file at any level under a "
-        "study directory is included (for example, files may be grouped into "
-        "series directories under the study level). "
-    )
     parser.add_argument(
         "--study_depth",
         "-e",
@@ -219,7 +209,7 @@ if __name__ == "__main__":
             "If not provided, every subdirectory at any level of the hierarchy under "
             "'root' that contains files is considered a study. If study_depth is "
             "a non-negative integer, then each directory that number of levels "
-            "below route is considered a study. E.g. if study_depth is 0, the "
+            "below root is considered a study. E.g. if study_depth is 0, the "
             "root directory itself is a single study. If study_depth is 1, each "
             "sub-directory of root is considered a study. If study_depth is 2, "
             "each sub-directory of a sub-directory of root is considered a "
@@ -235,8 +225,11 @@ if __name__ == "__main__":
         dest="slice_selection",
         help=(
             "Do not perform slice selection as part of analysis pipeline and "
-            "Instead run on every slice. Note that model accuracy deteriorates "
-            "away from the L3 slice. By default, slice selection is performed."
+            "instead run the segmentation on every slice. Note that model "
+            "accuracy deteriorates away from the slices it was trained on "
+            "(L3 for the default model). By default, slice selection is "
+            "performed and the segmentation is performed only on the selected "
+            "slices."
         ),
     )
     args = parser.parse_args()

@@ -73,7 +73,7 @@ architecture and training procedure. Of particular note are:
 Run the help for a full list of options:
 
 ```bash
-$ python3 train_segmentation.py --help
+$ python train_segmentation.py --help
 ```
 
 
@@ -183,5 +183,5 @@ model architecture and training process. Of particular note are:
 Run the help for a full list of options:
 
 ```bash
-$ python3 train_slice_selection.py --help
+$ python train_slice_selection.py --help
 ```

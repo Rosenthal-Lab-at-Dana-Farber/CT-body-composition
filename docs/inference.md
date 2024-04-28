@@ -2,7 +2,8 @@
 
 ### Input Data
 
- The input directory for any inference run should be the root folder of the cohort. A typical directory structure might look like the following:
+ The input directory for any inference run should be the root folder of the
+cohort. A typical directory structure might look like the following:
 
 
                       cohort_root_folder
@@ -10,23 +11,27 @@
                 _________________________________
                 |              |                |
               study_1       study_2        study_3
-                |               |               |   
+                |               |               |
              1.dcm            1.dcm           1.dcm
              2.dcm            2.dcm           2.dcm
              3.dcm            3.dcm           3.dcm
 
 
-Each study in the cohort will contain a batch of [DICOM](https://www.dicomstandard.org/about) files, which will make up one or more scans (also called series).
+Each study in the cohort will contain a batch of
+[DICOM](https://www.dicomstandard.org/about) files, which will make up one or
+more series.
 
 ### Running the Process (Command Line Interface)
 
-The primary script for running inference, `analyze_cohort.py``, runs on cohorts consisting of DICOM files.
-Most users will find that this script is suitable for their needs. If you need advanced configuration, consider using the Python API directly (see below).
+The primary script for running inference, `analyze_cohort.py``, runs on cohorts
+consisting of DICOM files.  Most users will find that this script is suitable
+for their needs. If you need advanced configuration, consider using the Python
+API directly (see below).
 
 Basic usage looks like this:
 
 ```bash
-$ python3 analyze_cohort.py /path/to/root/ /path/to/output/folder
+$ python analyze_cohort.py /path/to/root/ /path/to/output/folder
 ```
 
 See notes below for more information on the config file to set up the
@@ -130,10 +135,10 @@ There are a number of further options to customize the behavior of this process.
 They may be passed as command-line arguments to the `analyze_cohorts.py` file:
 
 `--num_threads`, `-t` - The number of parallel threads to use to read in DICOM
-files (typically the most time intensive step of the processing especially if the
-files are being read from a remote file system). You should choose this appropriately
-based on your hardware. Using a higher number if multiple CPU cores are available
-will usually speed up processing significantly.
+files (typically the most time intensive step of the processing especially if
+the files are being read from a remote file system). You should choose this
+appropriately based on your hardware. Using a higher number if multiple CPU
+cores are available will usually speed up processing significantly.
 
 `--segmentation_range`, `-r` - The range either side of the selected slice (in
 mm) to perform segmentation on for multislice analysis. If this is specified,
@@ -146,7 +151,8 @@ called `all_slices`, which stores segmentation masks and original images for
 every output slice in `.png` format in sub-directories named by
 `{MRN}_{ACC}_{SeriesInstanceUID}`. The filename of the `.png` images matches
 that the position in the JSON file. The preview image contains just the chosen
-center slice.
+center slice.  Note that this option requires that slice selection is *not*
+disabled with the --no_slice_selection option.
 
 `--keep_existing`, `-k` - This flag is used to carry on a process that was
 previously interrupted. If the same output directory as a previous run is used,
@@ -159,12 +165,28 @@ displayed by some DICOM viewers.
 `--min_slices_per_series`, `-m` - Reject series with fewer than this number of
 images. Useful for rejecting small localizer series. Default: 20
 
-`--slice_selection`, `-s` - Specify whether or not slice selection is performed. Defaults to True. As part of our efforts to modularize this pipeline, it can now be run on folders of individual DICOM slices without slice selection. If one wishes to run the analysis without slice selection, they need to set this value to False to allow certain decoupling logic to take place. The SliceSelector component also needs to be commented out in the component pipeline.
+`--slice_selection`, `-s` - Do not perform slice selection as part of analysis
+pipeline and instead run the segmentation on every slice. Note that model
+accuracy deteriorates away from the slices it was trained on (L3 for the
+default model). By default, slice selection is performed and the segmentation
+is performed only on the selected slices.
 
+`--study_depth`, `-e` - Depth of study directories under root.  If not
+provided, every subdirectory at any level of the hierarchy under 'root' that
+contains files is considered a "study". If `study_depth` is a non-negative
+integer, then each directory that number of levels below `root` is considered a
+study.  E.g. if `study_depth` is 0, the root directory itself is a single
+study.  If `study_depth` is 1, each sub-directory of `root` is considered a
+study. If `study_depth` is 2, each sub-directory of a sub-directory of root is
+considered a study, etc. If `study_depth` is used, any file at any level under
+a study directory is included (for example, files may be grouped into series
+directories under the study level and still be processed as a single study).
 
 ### Python API
 
-If you want to customize the operation of the pipeline, particularly the filtering and QA components, you can write your own Python code that makes use of our Python API within the `body_comp` module.
+If you want to customize the operation of the pipeline, particularly the
+filtering and QA components, you can write your own Python code that makes use
+of our Python API within the `body_comp` module.
 
 #### Pipeline Structure
 
