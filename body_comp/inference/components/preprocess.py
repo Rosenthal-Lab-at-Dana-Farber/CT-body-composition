@@ -14,7 +14,7 @@ from .component import Component, SeriesSummary, StudySummary
 
 class FindSeries(Component):
 
-    def __init__(self, num_threads=os.cpu_count(), stop_before_pixels=False):
+    def __init__(self, num_threads=None, stop_before_pixels=False):
         """
 
         Component object that identifies all series in a batch of files and
@@ -33,7 +33,13 @@ class FindSeries(Component):
         """
         super().__init__()
 
-        self.num_threads = num_threads
+        if num_threads is None:
+            cpu_count = os.cpu_count()
+            if cpu_count is None:
+                cpu_count = 1
+            self.num_threads = cpu_count
+        else:
+            self.num_threads = num_threads
         self.stop_before_pixels = stop_before_pixels
 
     def F(self, study_summary: StudySummary):
@@ -72,7 +78,7 @@ class FindSeries(Component):
 
 
 class FindSlices(Component):
-    def __init__(self, num_threads=os.cpu_count(), stop_before_pixels=False):
+    def __init__(self, num_threads=None, stop_before_pixels=False):
         """
 
         Component that creates a study summary out of every individual dicom
@@ -91,7 +97,13 @@ class FindSlices(Component):
         """
         super().__init__()
 
-        self.num_threads = num_threads
+        if num_threads is None:
+            cpu_count = os.cpu_count()
+            if cpu_count is None:
+                cpu_count = 1
+            self.num_threads = cpu_count
+        else:
+            self.num_threads = num_threads
         self.stop_before_pixels = stop_before_pixels
 
     def F(self, study_summary: StudySummary):

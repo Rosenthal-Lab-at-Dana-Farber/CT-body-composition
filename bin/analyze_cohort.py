@@ -81,9 +81,15 @@ def main(args):
 
     pipeline = Pipeline(transforms)
 
-    pipeline.apply(args.root, series=args.slice_selection)
+    summary_path = os.path.join(args.output_dir, "results.json")
+    pipeline.apply(
+        args.root,
+        series=args.slice_selection,
+        summary_path=summary_path,
+        study_depth=args.study_depth,
+    )
 
-    pipeline.save_cohort_summary(os.path.join(args.output_dir, "results.json"))
+    pipeline.save_cohort_summary(summary_path)
 
     write_qc_to_csv(
         pipeline.cohort_summary, os.path.join(args.output_dir, "qc_results.csv")
@@ -94,7 +100,7 @@ def main(args):
         os.path.join(args.output_dir, "qc_summary.csv"),
     )
 
-    multislice = True if args.segmentation_range else False
+    multislice = args.segmentation_range is not None
 
     # if not using slice selection in above pipeline, "slice_selection" needs to be set to False
     write_results_to_csv(
@@ -114,7 +120,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Run the body composition algorithm on a cohort of patients in a csv file"
+        description="Run the body composition algorithm on a cohort of patients in a directory"
     )
     parser.add_argument("root", help="Directory containing input files")
     parser.add_argument(
@@ -156,6 +162,35 @@ if __name__ == "__main__":
         type=int,
         default=20,
         help="Reject series with fewer than this number of instances",
+    )
+    (
+        "If not provided, every subdirectory at any level of the hierarchy under "
+        "'root' that contains files is considered a study. If study_depth is "
+        "a non-negative integer, then each directory that number of levels "
+        "below route is considered a study. E.g. if study_depth is 0, the "
+        "root directory itself is a single study. If study_depth is 1, each "
+        "sub-directory of root is considered a study. If study_depth is 2, "
+        "each sub-directory of a sub-directory of root is considered a "
+        "study, etc. If this option is used, any file at any level under a "
+        "study directory is included (for example, files may be grouped into "
+        "series directories under the study level). "
+    )
+    parser.add_argument(
+        "--study_depth",
+        "-e",
+        type=int,
+        help=(
+            "If not provided, every subdirectory at any level of the hierarchy under "
+            "'root' that contains files is considered a study. If study_depth is "
+            "a non-negative integer, then each directory that number of levels "
+            "below route is considered a study. E.g. if study_depth is 0, the "
+            "root directory itself is a single study. If study_depth is 1, each "
+            "sub-directory of root is considered a study. If study_depth is 2, "
+            "each sub-directory of a sub-directory of root is considered a "
+            "study, etc. If this option is used, any file at any level under a "
+            "study directory is included (for example, files may be grouped into "
+            "series directories under the study level). "
+        ),
     )
     parser.add_argument(
         "--no_slice_selection",
