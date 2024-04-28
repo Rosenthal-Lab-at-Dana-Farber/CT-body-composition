@@ -6,6 +6,7 @@ from pathlib import Path
 
 from body_comp.inference.components.preprocess import (
     FindSeries,
+    FindSlices,
     WindowAndShiftDICOMSeries,
     FillMetadata,
 )
@@ -33,6 +34,12 @@ from body_comp.inference.utils import (
 
 def main(args):
 
+    if not args.slice_selection and args.segmentation_range is not None:
+        raise ValueError(
+            "Specifying a segmentation range is valid only when "
+            "slice selection is performed."
+        )
+
     num_threads = args.num_threads if args.num_threads else os.cpu_count()
 
     estimator_config = {}
@@ -51,23 +58,44 @@ def main(args):
                     "sigmoid_output"
                 ]
 
-    transforms = [
-        FindSeries(),
-        FillMetadata(),
-        CheckEntangledSeries(),
-        CheckType(),
-        CheckModality(),
-        CheckSeriesLength(min_series_length=args.min_slices_per_series),
-        CheckOrientation(),
-        CheckCircleCrop(),
-        CheckPixelArraySize(),
-        CheckDICOMDecompressionError(),
-        WindowAndShiftDICOMSeries(),
-        SliceSelector(
-            **slice_selector_config,
-            num_threads=num_threads,
-        ),
-        # if not using slice selection in pipeline, "slice_selection" needs to be set to False
+    transforms = []
+
+    if args.slice_selection:
+        transforms.append(FindSeries())
+    else:
+        transforms.append(FindSlices())
+
+    transforms.append(FillMetadata())
+
+    if args.slice_selection:
+        transforms.extend(
+            [
+                CheckEntangledSeries(),
+                CheckSeriesLength(min_series_length=args.min_slices_per_series),
+            ]
+        )
+
+    transforms.extend(
+        [
+            CheckType(),
+            CheckModality(),
+            CheckOrientation(),
+            CheckCircleCrop(),
+            CheckPixelArraySize(),
+            CheckDICOMDecompressionError(),
+            WindowAndShiftDICOMSeries(),
+        ]
+    )
+
+    if args.slice_selection:
+        transforms.append(
+            SliceSelector(
+                **slice_selector_config,
+                num_threads=num_threads,
+            )
+        )
+
+    transforms.append(
         BodyCompositionEstimator(
             **estimator_config,
             num_threads=num_threads,
@@ -76,8 +104,8 @@ def main(args):
             keep_existing=args.keep_existing,
             dicom_seg=args.dicom_seg,
             slice_selection=args.slice_selection,
-        ),
-    ]
+        )
+    )
 
     pipeline = Pipeline(transforms)
 
@@ -198,8 +226,9 @@ if __name__ == "__main__":
         action="store_false",
         dest="slice_selection",
         help=(
-            "Do not perform slice selection as part of analysis pipeline. "
-            "By default, slice selection is performed."
+            "Do not perform slice selection as part of analysis pipeline and "
+            "Instead run on every slice. Note that model accuracy deteriorates "
+            "away from the L3 slice. By default, slice selection is performed."
         ),
     )
     args = parser.parse_args()
