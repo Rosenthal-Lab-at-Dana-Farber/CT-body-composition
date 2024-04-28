@@ -281,14 +281,10 @@ def write_results_to_csv(
                         )
                         continue
                     if not center:
-                        # Default for multislice anlysis is to use the overall values aggregated from all the slices
+                        # Default for multislice anlysis is to use the overall
+                        # values aggregated from all the slices
                         tissue_items = slice_data["overall"]["tissues"].items()
                 else:
-                    # Copy over instance-level metadata
-                    for key in INSTANCE_LEVEL_TAGS:
-                        if key in slice_data:
-                            outputs_results[f"{slice_name}_{key}"] = slice_data[key]
-
                     if slice_selection:
                         outputs_results[
                             f"{slice_name}_sop_instance_uid"
@@ -296,12 +292,24 @@ def write_results_to_csv(
                         outputs_results[f"{slice_name}_z_location"] = slice_data[
                             "z_location"
                         ]
+
+                        # Copy over instance-level metadata
+                        for key in INSTANCE_LEVEL_TAGS:
+                            if key in slice_data:
+                                outputs_results[f"{slice_name}_{key}"] = slice_data[key]
+
                     else:
                         outputs_results["z_location"] = slice_data[
                             "z_location"
                         ]
 
-                    # Simple single slice anaysis - use results from the single slice
+                        # Copy over instance-level metadata
+                        for key in INSTANCE_LEVEL_TAGS:
+                            if key in slice_data:
+                                outputs_results[key] = slice_data[key]
+
+                    # Simple single slice analysis - use results from the
+                    # single slice
                     tissue_items = slice_data["tissues"].items()
 
                 for tissue_name, tissue_data in tissue_items:
@@ -315,7 +323,7 @@ def write_results_to_csv(
                         "boundary_check",
                     ]:
                         outputs_results[
-                            "{}_{}_{}".format(slice_name, tissue_name, prop)
+                            f"{slice_name}_{tissue_name}_{prop}"
                         ] = tissue_data[prop]
 
             output_list.append(outputs_results)

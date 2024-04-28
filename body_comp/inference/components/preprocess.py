@@ -118,7 +118,8 @@ class FindSlices(Component):
             stop_before_pixels=self.stop_before_pixels,
         )
 
-        study_summary["study_name"] = study_summary["files"][0].split("/")[-2]
+        study_name = f"{datasets[0].PatientID}_{datasets[0].AccessionNumber}"
+        study_summary["study_name"] = study_name
         study_uid = datasets[0].StudyInstanceUID
 
         for file, dcm in zip(study_summary["files"], datasets):
