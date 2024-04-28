@@ -110,7 +110,7 @@ class Pipeline:
                 study_summary = t.apply(study_summary)
                 if t.last:
                     study_summary = t.drop_keys(study_summary)
-            self.cohort_summary[study_dir] = study_summary
+            self.cohort_summary[str(study_dir)] = study_summary
 
             # Write out the summary on every loop
             if summary_path is not None:
@@ -121,4 +121,9 @@ class Pipeline:
 
     def save_cohort_summary(self, filename):
         with open(filename, "w") as outfile:
-            json.dump(self.cohort_summary, outfile, default=default)
+            json.dump(
+                self.cohort_summary,
+                outfile,
+                default=default,
+                indent=2
+            )
