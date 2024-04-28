@@ -3,7 +3,9 @@ import json
 
 import argparse
 from pathlib import Path
+import importlib.resources
 
+import body_comp
 from body_comp.inference.components.preprocess import (
     FindSeries,
     FindSlices,
@@ -46,17 +48,23 @@ def main(args):
     slice_selector_config = {}
 
     # Need to decouple slice selection specific parameters from body comp estimator specific ones
-    if isinstance(args.estimator_config, (str, Path)):
-        with open(str(args.estimator_config), "r") as jsonfile:
-            estimator_config = json.load(jsonfile)
-            if "slice_selection_weights" in estimator_config:
-                slice_selector_config["slice_selection_weights"] = estimator_config.pop(
-                    "slice_selection_weights"
-                )
-            if "sigmoid_output" in estimator_config:
-                slice_selector_config["sigmoid_output"] = estimator_config[
-                    "sigmoid_output"
-                ]
+    if args.estimator_config is None:
+        estimator_config_path = (
+            importlib.resources.files(body_comp) /
+            "configs/default_l3_config.json"
+        )
+    else:
+        estimator_config_path = args.estimator_config
+    with open(str(estimator_config_path), "r") as jsonfile:
+        estimator_config = json.load(jsonfile)
+        if "slice_selection_weights" in estimator_config:
+            slice_selector_config["slice_selection_weights"] = estimator_config.pop(
+                "slice_selection_weights"
+            )
+        if "sigmoid_output" in estimator_config:
+            slice_selector_config["sigmoid_output"] = estimator_config[
+                "sigmoid_output"
+            ]
 
     transforms = []
 

@@ -1,9 +1,10 @@
-import numpy as np
+import functools
+import importlib.resources
 import json
 import multiprocessing as mp
 
-import functools
 
+import numpy as np
 from scipy.ndimage.filters import gaussian_filter
 from scipy.special import expit
 
@@ -11,6 +12,7 @@ from skimage.transform import resize
 
 from tensorflow.keras.models import load_model
 
+import body_comp
 from .component import Component, SeriesSummary
 from ..configs import (
     DEFAULT_SLICE_PARAMS,
@@ -32,7 +34,8 @@ class SliceSelector(Component):
         self.slice_smoothing_kernel = 2.0
         if slice_selection_weights is None:
             slice_selection_weights = (
-                "/body_comp/body_comp/models/regression_densenet_l12_k12.hdf5"
+                importlib.resources.files(body_comp) /
+                "models/regression_densenet_l12_k12.hdf5"
             )
         self.slice_selection_model = load_model(slice_selection_weights, compile=False)
 

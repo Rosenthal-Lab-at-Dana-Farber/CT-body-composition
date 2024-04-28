@@ -1,3 +1,4 @@
+import importlib.resources
 import os
 from tempfile import TemporaryDirectory
 
@@ -26,6 +27,7 @@ matplotlib.use("Agg")
 from matplotlib import pyplot as plt
 
 
+import body_comp
 from .component import Component
 from ..utils import get_dicom_metadata, apply_window
 from ..configs import (
@@ -78,7 +80,10 @@ class BodyCompositionEstimator(Component):
             if self.slice_params[s]["model_weights"] is None:
                 self.slice_params[s][
                     "model_weights"
-                ] = "/body_comp/body_comp/models/segmentation_unet_d5_i16_c1.hdf5"
+                ] = (
+                    importlib.resources.files(body_comp) /
+                    "models/segmentation_unet_d5_i16_c1.hdf5"
+                )
         unique_seg_models = list(
             set([v["model_weights"] for v in self.slice_params.values()])
         )
