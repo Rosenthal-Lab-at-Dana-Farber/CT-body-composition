@@ -398,7 +398,7 @@ class BodyCompositionEstimator(Component):
                         label2rgb(mask, colors=MASK_COLOURS, bg_label=-1) * 255
                     ).astype(np.uint8)
 
-                    im = apply_window(image, self.win_centre, self.win_width)
+                    im = apply_window(im, self.win_centre, self.win_width)
                     im = gray2rgb(im).astype(np.uint8)
 
                     composite_image = np.hstack([im, mask]).astype(np.uint8)
