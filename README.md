@@ -59,8 +59,13 @@ If you use this code in your publication, please cite these papers.
 ### Acknowledgements
 
 The Python code for body composition estimation was written by Christopher Bridge at MGH & BWH Center for Clinical Data
-Science. The z-score curve fitting R code in the `stats` directory was written by Camden Bay at Brigham and Women's
-Hospital.
+Science (now [MGB AI](https://www.massgeneralbrigham.org/en/research-and-innovation/centers-and-programs/data-science))
+and the [Athinoula A. Martinos Center for Biomedical Imaging](https://martinos.org), Alex Chowdhury, and Sahil
+Nalawade both at the Department of Informatics & Analytics at the
+[Dana Farber Cancer Institute](https://www.dana-farber.org/). The z-score curve fitting R code in the `stats` directory
+was written by Camden Bay at Brigham and Women's Hospital. The project was conceived and led by Michael Rosenthal at
+the Dana Farber Cancer Institute and Florian Fintelmann at Massaschusetts Department of Radiology with assistance
+from Kirti Magudia at Brigham and Women's hospital.
 
 ### See Also
 
