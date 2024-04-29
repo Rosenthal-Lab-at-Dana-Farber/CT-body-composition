@@ -1,6 +1,7 @@
 # CT Body Composition
 
-This repository provides code for training and running body composition estimation models on abdominal CT scans.
+This repository provides code and models weights for training and running body composition estimation models onabdominal
+abdominal CT scans.
 
 ### Getting Started
 
@@ -14,20 +15,6 @@ See the documentation pages for further details:
 * [Training](docs/training.md) - For training new models
 * [Inference](docs/inference.md) - For running the model on new data
 
-### Model Weights
-
-At this stage, we are not releasing our trained model weights publicly on github, and you will not find them in this
-repository. You are welcome to use this code on your own data to develop your own model, and you will find full
-instructions on how to do so in the documentation. We are however happy to discuss collaboration possibilities with
-investigators interested in using our models (including the deep learning models and population curve
-models) for their own studies. Please email us to discuss further:
-
-- Chris Bridge, Massachusetts General Hospital (cbridge at partners dot org)
-- Kirti Magudia, Duke University (kirti dot magudia at duke dot edu)
-- Michael Rosenthal, Dana Farber Cancer Institute (Michael underscore Rosenthal at dfci dot harvard dot edu)
-- Florian Fintelmann, Massachusetts General Hospital (fintelmann at mgh dot harvard dot edu)
-- Camden Bay, Brigham and Women's Hospital (cpbay at bwh dot harvard dot edu)
-
 ### Publications
 
 This code accompanies the following publication:
@@ -38,7 +25,7 @@ This code accompanies the following publication:
 > K. Magudia, C.P. Bridge, C.P. Bay, A. Babic, F.J. Fintelmann, F. Troschel, N. Miskin, W. Wrobel, L.K. Brais,
 > K.P. Andriole, B.M. Wolpin, and M.H. Rosenthal
 >
-> *Radiology* (In Press)
+> *Radiology*
 >
 > [Article at RSNA](https://pubs.rsna.org/doi/10.1148/radiol.2020201640)
 
@@ -66,6 +53,13 @@ Nalawade both at the Department of Informatics & Analytics at the
 was written by Camden Bay at Brigham and Women's Hospital. The project was conceived and led by Michael Rosenthal at
 the Dana Farber Cancer Institute and Florian Fintelmann at Massaschusetts Department of Radiology with assistance
 from Kirti Magudia at Brigham and Women's hospital.
+
+- Chris Bridge, Massachusetts General Hospital (cbridge at mgh dot harvard dot edu)
+- Alex Chowdhury, Dana Farber Cancer Institute (Alexander underscore Chowdhury at dfci dot harvard dot edu)
+- Kirti Magudia, Duke University (kirti dot magudia at duke dot edu)
+- Michael Rosenthal, Dana Farber Cancer Institute (Michael underscore Rosenthal at dfci dot harvard dot edu)
+- Florian Fintelmann, Massachusetts General Hospital (fintelmann at mgh dot harvard dot edu)
+- Camden Bay, Brigham and Women's Hospital (cpbay at bwh dot harvard dot edu)
 
 ### See Also
 
