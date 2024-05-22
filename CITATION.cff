@@ -1,0 +1,104 @@
+cff-version: 1.2.0
+message: "Citation for this repository"
+authors:
+  - family-names: Bridge
+    given-names: Christopher
+  - family-names: Chowdhury
+    given-names: Alexander
+  - family-names: Nalawade
+    given-names: Sahil
+  - family-names: Umeton
+    given-names: Renato
+  - family-names: Rosenthal
+    given-names: Michael
+title: "Population-Scale CT-based Body Composition Analysis of a Large Outpatient Population Using Deep Learning to Derive Age-, Sex-, and Race-specific Reference Curves"
+date-released: 2020-11-24
+doi: 10.1148/radiol.2020201640
+url: https://github.com/Rosenthal-Lab-at-Dana-Farber/ct_body_composition
+preferred-citation:
+  type: article
+  authors:
+      - family-names: Magudia
+        given-names: Kirti
+      - family-names: Bridge
+        given-names: Christopher
+      - family-names: Bay
+        given-names: Camden
+      - family-names: Babic
+        given-names: Ana
+      - family-names: Fintelmann
+        given-names: Florian
+      - family-names: Troschel
+        given-names: Fabian
+      - family-names: Nityanand
+        given-names: Miskin
+      - family-names: Wrobel
+        given-names: William
+      - family-names: Brais
+        given-names: Lauren
+      - family-names: Andriole
+        given-names: Katherine
+      - family-names: Wolpin
+        given-names: Brian
+      - family-names: Rosenthal
+        given-names: Michael
+  doi: 10.1148/radiol.2020201640
+  journal: "Radiology"
+  publisher: Radiological Society of North America
+  month: 11
+  year: 2020
+  issue: 2
+  volume: 298
+  start: 319
+  title: "Fully-Automated Analysis of Body Composition from CT in Cancer Patients Using Convolutional Neural Networks"
+  url: https://doi.org/10.1148/radiol.2020201640
+title: "Fully-Automated Analysis of Body Composition from CT in Cancer Patients Using Convolutional Neural Networks"
+date-released: 2018-08-11
+doi: 10.1007/978-3-030-01201-4_22
+preferred-citation:
+  type: article
+  authors:
+      - family-names: Bridge
+        given-names: Christopher
+      - family-names: Rosenthal
+        given-names: Michael
+      - family-names: Wright
+        given-names: Bradley
+      - family-names: Kotecha
+        given-names: Gopal
+      - family-names: Fintelmann
+        given-names: Florian
+      - family-names: Troschel
+        given-names: Fabian
+      - family-names: Miskin
+        given-names: Nityanand
+      - family-names: Desai
+        given-names: Khanant
+      - family-names: Wrobel
+        given-names: William
+      - family-names: Babic
+        given-names: Ana
+      - family-names: Khalaf
+        given-names: Natalia
+      - family-names: Brais
+        given-names: Lauren
+      - family-names: Welch
+        given-names: Marisa
+      - family-names: Zellers
+        given-names: Caitlin
+      - family-names: Tenenholtz
+        given-names: Neil
+      - family-names: Michalski
+        given-names: Mark
+      - family-names: Wolpin
+        given-names: Brian
+      - family-names: Andriole
+        given-names: Katherine
+  journal: MICCAI
+  publisher: Springer
+  month: 08
+  year: 2018
+  start: 204
+  title: "Fully-Automated Analysis of Body Composition from CT in Cancer Patients Using Convolutional Neural Networks"
+  url: https://link.springer.com/chapter/10.1007/978-3-030-01201-4_22
+
