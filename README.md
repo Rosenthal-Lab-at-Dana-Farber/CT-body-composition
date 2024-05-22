@@ -1,6 +1,6 @@
 # CT Body Composition
 
-This repository provides code and models weights for training and running body composition estimation models onabdominal
+This repository provides code and models weights for training and running body composition estimation models on
 abdominal CT scans.
 
 ### Getting Started
