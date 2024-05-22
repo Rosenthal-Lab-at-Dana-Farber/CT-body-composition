@@ -3,6 +3,11 @@
 This repository provides code and models weights for training and running body composition estimation models on
 abdominal CT scans.
 
+### Note: Git-LFS
+
+The model weights are stored in this repository using `git-lfs`. Please ensure you have git-lfs set up following
+the instructions [here](https://git-lfs.com/) instructions before cloning the repository.
+
 ### Getting Started
 
 After cloning the repository, you have two options for setting up the environment.
