@@ -45,6 +45,7 @@ class Pipeline:
         root,
         series=True,
         study_depth=None,
+        study_list=None,
         summary_path=None,
         keep_existing=False,
     ):
@@ -70,7 +71,15 @@ class Pipeline:
             each sub-directory of a sub-directory of root is considered a
             study, etc. If this option is used, any file at any level under a
             study directory is included (for example, files may be grouped into
-            series directories under the study level).
+            series directories under the study level). Incompatible with
+            study_list.
+        study_list: str | None
+            Path to a file containing a list of studies to process. This
+            allows you to specify that only a subset of studies under the
+            root be processed (by default all are processed). The file
+            should be a plain text. Each line within the file should contain
+            the path to a single study to be processed, given relative to
+            the root directory. Incompatible with study_depth.
         summary_path: str | None
             If non-None, the summary JSON is written out to this path after
             each study is processed.
@@ -92,13 +101,12 @@ class Pipeline:
                 f"The specified root directory does not exist {str(root)}"
             )
 
-        if study_depth is None:
-            study_dirs = [
-                Path(study_dir)
-                for study_dir, _, files in os.walk(root, followlinks=True)
-                if files
-            ]
-        else:
+        if study_list is not None and study_depth is not None:
+            raise TypeError(
+                "'study_list' and 'study_depth' are incompatible."
+            )
+
+        if study_depth is not None:
             if study_depth == 0:
                 study_dirs = [Path(root)]
             elif study_depth > 0:
@@ -108,6 +116,23 @@ class Pipeline:
                 ]
             else:
                 raise ValueError("Study depth must be a non-negative integer")
+        elif study_list is not None:
+            with open(study_list, 'r') as f:
+                study_dirs = [
+                    Path(root).joinpath(p.strip()) for p in f.readlines()
+                ]
+
+            for d in study_dirs:
+                if not d.exists():
+                    raise FileNotFoundError(
+                        f"Study directory {str(d)} not found."
+                    )
+        else:
+            study_dirs = [
+                Path(study_dir)
+                for study_dir, _, files in os.walk(root, followlinks=True)
+                if files
+            ]
 
         print(f"Found {len(study_dirs)} studies in root directory.")
 
@@ -126,7 +151,7 @@ class Pipeline:
         for count, study_dir in enumerate(study_dirs):
             print(f"Analyzing study {count}/{len(study_dirs)}: {study_dir}")
 
-            if study_depth is None:
+            if study_depth is None and study_list is None:
                 # Only files directly in the directory
                 paths = [str(p) for p in study_dir.iterdir() if p.is_file()]
             else:

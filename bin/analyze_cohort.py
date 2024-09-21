@@ -123,6 +123,7 @@ def main(args):
         series=args.slice_selection,
         summary_path=summary_path,
         study_depth=args.study_depth,
+        study_list=args.study_list,
         keep_existing=args.keep_existing,
     )
 
@@ -218,7 +219,20 @@ if __name__ == "__main__":
             "each sub-directory of a sub-directory of root is considered a "
             "study, etc. If this option is used, any file at any level under a "
             "study directory is included (for example, files may be grouped into "
-            "series directories under the study level). "
+            "series directories under the study level). Incompatible with "
+            "study_list."
+        ),
+    )
+    parser.add_argument(
+        "--study_list",
+        "-l",
+        help=(
+            "Path to a file containing a list of studies to process. This "
+            "allows you to specify that only a subset of studies under the "
+            "root be processed (by default all are processed). The file "
+            "should be a plain text. Each line within the file should contain "
+            "the path to a single study to be processed, given relative to "
+            "the root directory. Incompatible with study_depth."
         ),
     )
     parser.add_argument(

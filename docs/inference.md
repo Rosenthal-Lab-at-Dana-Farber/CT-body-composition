@@ -181,6 +181,13 @@ study. If `study_depth` is 2, each sub-directory of a sub-directory of root is
 considered a study, etc. If `study_depth` is used, any file at any level under
 a study directory is included (for example, files may be grouped into series
 directories under the study level and still be processed as a single study).
+Incompatible with `study_depth`.
+
+`--study_list`, `-l` - Path to a file containing a list of studies to process.
+This allows you to specify that only a subset of studies under the root be
+processed (by default all are processed). The file should be a plain text. Each
+line within the file should contain the path to a single study to be processed,
+given relative to the root directory. Incompatible with `study_depth`.
 
 ### Python API
 
