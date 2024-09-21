@@ -128,6 +128,9 @@ def main(args):
 
     pipeline.save_cohort_summary(summary_path)
 
+    if len(pipeline.cohort_summary) == 0:
+        return
+
     write_qc_to_csv(
         pipeline.cohort_summary, os.path.join(args.output_dir, "qc_results.csv")
     )

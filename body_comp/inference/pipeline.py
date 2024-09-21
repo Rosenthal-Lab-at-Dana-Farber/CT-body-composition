@@ -87,6 +87,11 @@ class Pipeline:
                 f"with components that will be applied to {root}."
             )
 
+        if not Path(root).exists():
+            raise FileNotFoundError(
+                f"The specified root directory does not exist {str(root)}"
+            )
+
         if study_depth is None:
             study_dirs = [
                 Path(study_dir)
