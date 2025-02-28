@@ -55,19 +55,19 @@ SERIAL_NUMBER = "1"
 KNOWN_SEGMENT_DESCRIPTIONS = {
     "muscle": {
         "segment_label": "Muscle",
-        "segmented_property_category": codes.SCT.Muscle,
+        "segmented_property_category": codes.SCT.Tissue,
         "segmented_property_type": codes.SCT.SkeletalMuscle,
     },
     "subcutaneous_fat": {
         "segment_label": "Subcutaneous Fat",
-        "segmented_property_category": codes.SCT.BodyFat,
+        "segmented_property_category": codes.SCT.Tissue,
         "segmented_property_type": CodedConcept(
             "727176007", "SCT", "Entire subcutaneous fatty tissue"
         ),
     },
     "visceral_fat": {
         "segment_label": "Visceral Fat",
-        "segmented_property_category": codes.SCT.BodyFat,
+        "segmented_property_category": codes.SCT.Tissue,
         "segmented_property_type": CodedConcept(
             "725274000", "SCT", "Entire adipose tissue of abdomen"
         ),
