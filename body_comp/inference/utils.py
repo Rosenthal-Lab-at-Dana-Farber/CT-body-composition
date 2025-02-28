@@ -54,7 +54,7 @@ def read_file(filepath, list_tags=None, stop_before_pixels=False):
     """
 
     try:
-        meta = pydicom.filereader.read_file(
+        meta = pydicom.dcmread(
             filepath, stop_before_pixels=stop_before_pixels, specific_tags=list_tags
         )
         return meta
